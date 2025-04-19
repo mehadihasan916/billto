@@ -1,0 +1,11 @@
+{
+    "custum_bangla_fonts": {
+        "normal": "custum_bangla_fonts_normal_f29afe6c55a67613693fa96294d6da39"
+    },
+    "dejavu sans": {
+        "bold": "D:\\Git_new\\billto\\vendor\\dompdf\\dompdf\/lib\/fonts\/DejaVuSans-Bold",
+        "bold_italic": "D:\\Git_new\\billto\\vendor\\dompdf\\dompdf\/lib\/fonts\/DejaVuSans-BoldOblique",
+        "italic": "D:\\Git_new\\billto\\vendor\\dompdf\\dompdf\/lib\/fonts\/DejaVuSans-Oblique",
+        "normal": "dejavu_sans_normal_f29afe6c55a67613693fa96294d6da39"
+    }
+}

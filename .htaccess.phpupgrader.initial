@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+DirectoryIndex index.php
+
+RewriteEngine On 
+# RewriteRule ^$ public/index.php [L]
+# RewriteCond %{HTTPS} !=off
+RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

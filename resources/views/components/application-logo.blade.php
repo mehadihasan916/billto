@@ -1,0 +1,1 @@
+<img src="{{ asset('assets/frontend/img/LOGO/billto-logo.png') }}" {{ $attributes }}>

@@ -1,0 +1,18 @@
+@font-face {
+    font-family:custum_bangla_fonts;
+    src: url('fonts/NotoSansBengali-VariableFont_wdth,wght.ttf');
+}
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+    font-family: custum_bangla_fonts !important;
+}
+
+* {
+    font-family: custum_bangla_fonts !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
