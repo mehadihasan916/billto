@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\frontend\DashboardController;
 use Carbon\Carbon;
 use App\Models\Invoice;
 use App\Models\PaymentGetway;
@@ -76,7 +77,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
     //payment payment gateway
-Route::post('/payment/store', [SubscriptionPackContoller::class, 'payment_gateway_store'])->name('payment.store');
+    Route::post('/payment/store', [SubscriptionPackContoller::class, 'payment_gateway_store'])->name('payment.store');
 
 
     // just chek route
@@ -85,11 +86,11 @@ Route::post('/payment/store', [SubscriptionPackContoller::class, 'payment_gatewa
 Route::get('/test/bill', [DashboardController::class, 'test_bill']);
 
 
- // Clear all cache with a single function
- Route::get('/optimize-clear', function() {
-     $exitCode = Artisan::call('optimize:clear');
-     return 'Application cache cleared successfully';
- });
+// Clear all cache with a single function
+Route::get('/optimize-clear', function () {
+    $exitCode = Artisan::call('optimize:clear');
+    return 'Application cache cleared successfully';
+});
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -103,4 +104,3 @@ Route::get('/notice/div/hidden', function () {
     Session::put('hidden_session', 'd-none');
     return redirect()->back();
 });
-
