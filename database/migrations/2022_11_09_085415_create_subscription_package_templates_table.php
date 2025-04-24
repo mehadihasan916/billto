@@ -17,7 +17,7 @@ class CreateSubscriptionPackageTemplatesTable extends Migration
             $table->id();
             $table->integer('subscriptionPackageId')->nullable();
             $table->string('template');
-            $table->string('company');
+            $table->string('company')->nullable();
             $table->timestamps();
         });
     }

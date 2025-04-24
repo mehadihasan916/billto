@@ -115,6 +115,8 @@ class SubscriptionPackageController extends Controller
         $templats = SubscriptionPackageTemplate::where('subscriptionPackageId', $id)->get();
         $invoiceTemplates = InvoiceTemplate::get();
         $pricings = Pricing::where('subscription_package_id', $id)->get();
+
+        // dd($invoiceTemplates);
         return view('admin.package.edit-package', compact('subscriptionPackage', 'templats', 'invoiceTemplates', 'pricings'));
     }
 
@@ -187,12 +189,14 @@ class SubscriptionPackageController extends Controller
     }
 
 
-    public function addRow($id){
-          $id = $id;
-         return view('admin.package.add-row', compact('id'));
+    public function addRow($id)
+    {
+        $id = $id;
+        return view('admin.package.add-row', compact('id'));
     }
 
-    public function addRowStore(Request $request){
+    public function addRowStore(Request $request)
+    {
 
 
         $description = $request->description;
@@ -209,8 +213,7 @@ class SubscriptionPackageController extends Controller
             ]);
         }
 
-        return redirect()->to('/admin/package/list')->with('message','Pricing description updated');
-
+        return redirect()->to('/admin/package/list')->with('message', 'Pricing description updated');
     }
     /**
      * Remove the specified resource from storage.
