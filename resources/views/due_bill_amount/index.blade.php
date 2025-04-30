@@ -70,7 +70,7 @@
         </div>
         <div class="mb-1">
             <strong class="mb-2 text-black">{{ __('messages.Payment_Amount') }}</strong>
-            <input class="form-control form-control-sm" id="amount_id" type="number" name="amount_id" readonly>
+            <input class="form-control form-control-sm" id="amount_id" type="number" name="amount_id" readonly min="1">
             <small id="message_error" class="d-none text-danger"> Please check due amount</small>
         </div>
     </div>

@@ -408,9 +408,9 @@
                             <label for="invoice_po_number" class="col-sm-4 col-form-label textColor">
                                 {{ __('messages.PO_Number') }} </label>
                             <div class="col-sm-8">
-                                <input type="text" name="invoice_po_number"
+                                <input type="number" name="invoice_po_number"
                                     class="form-control inputBorderRedius textColor" id="invoice_po_number"
-                                    value="@if (isset($invoiceData->invoice_po_number)) {{ $invoiceData->invoice_po_number }} @endif">
+                                    value="@if (isset($invoiceData->invoice_po_number)) {{ $invoiceData->invoice_po_number }} @endif"   min="0"  >
                                 <div id="invoice_po_number_error" class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -448,7 +448,7 @@
                         <div class="input-group">
                             <input type="number" name="product_quantity" id="product_quantity"
                                 class="form-control inputBorderRedius" placeholder="{{ __('messages.Quantity') }}"
-                                onchange="ptotal();addData();">
+                                onchange="ptotal();addData();" min="1" max="100000">
 
                             <div id="quantity_error" class="invalid-feedback"></div>
                         </div>
@@ -458,7 +458,7 @@
                         <div class="input-group ">
                             <input type="number" name="product_rate" id="product_rate"
                                 class="form-control inputBorderRedius" placeholder="{{ __('messages.Rate') }}"
-                                onchange="ptotal();addData();">
+                                onchange="ptotal();addData();"  min="1" max="100000">
 
                             <div id="product_rate_error" class="invalid-feedback"></div>
                         </div>

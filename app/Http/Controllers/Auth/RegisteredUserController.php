@@ -44,8 +44,8 @@ class RegisteredUserController extends Controller
             'password_confirmation' => ['required'],
 
         ]);
-        if($request->password_confirmation != $request->password){
-            return back()->with('message','Password Not match');
+        if ($request->password_confirmation != $request->password) {
+            return back()->with('message', 'Password Not match');
         }
 
         $user = User::create([
@@ -59,17 +59,17 @@ class RegisteredUserController extends Controller
         $get_id = $user->id;
 
         PaymentGetway::create([
-            'user_id'=> $get_id,
-            'amount'=>'0',
-            'subscription_package_id'=>'1',
-            'organization_package_id'=>'0',
-            'created_at'=>Carbon::now()
+            'user_id' => $get_id,
+            'amount' => '0',
+            'subscription_package_id' => '1',
+            'organization_package_id' => '0',
+            'created_at' => Carbon::now()
         ]);
         ComplateInvoiceCount::create([
-            'user_id'=> $get_id,
-            'invoice_count_total'=>'0',
-            'current_invoice_total'=>'0',
-            'created_at'=>Carbon::now()
+            'user_id' => $get_id,
+            'invoice_count_total' => '0',
+            'current_invoice_total' => '0',
+            'created_at' => Carbon::now()
         ]);
 
         Auth::login($user);
