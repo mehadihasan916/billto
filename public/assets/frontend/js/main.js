@@ -928,9 +928,39 @@ function load_more(id = '', token) {
 }
 $('body').on('click', '#loadMoreBotton', function () {
     var id = $(this).data('id');
- 
+
     $('#loadMoreBotton').html('loading...');
     load_more(id);
 
 });
 // invoice tamplate more data load function
+
+// invoice create date and due date validation
+function updateDueDate() {
+    const invoiceInput = document.getElementById('invoice_current_date');
+    const dueInput = document.getElementById('invoice_date_due');
+
+    const invoiceDateValue = invoiceInput.value;
+    if (!invoiceDateValue) return;
+
+    const invoiceDate = new Date(invoiceDateValue);
+    const dueDate = new Date(invoiceDate);
+    dueDate.setDate(dueDate.getDate() + 7);
+
+    const yyyy = dueDate.getFullYear();
+    const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(dueDate.getDate()).padStart(2, '0');
+
+    const formattedDueDate = `${yyyy}-${mm}-${dd}`;
+
+    dueInput.value = formattedDueDate;
+    dueInput.min = invoiceDateValue;
+}
+
+// On page load
+window.addEventListener('DOMContentLoaded', updateDueDate);
+
+// On invoice date change
+document.getElementById('invoice_current_date')
+    .addEventListener('change', updateDueDate);
+

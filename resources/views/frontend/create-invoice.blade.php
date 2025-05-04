@@ -363,13 +363,20 @@
                             <label class="col-sm-4 col-form-label textColor">{{ __('messages.Date') }} *</label>
                             <div class="col-sm-8">
                                 <div class="input-group ">
-                                    <input type="text" name="invoice_date"
+                                    {{-- <input type="text" name="invoice_date"
                                         class="form-control textColor inputBorderRedius"
                                         value=" @if (isset($invoiceData->invoice_date)) {{ $invoiceData->invoice_date }}@else{{ date('Y-m-d') }} @endif"
-                                        id="invoice_date" readonly>
-                                    <label class="invoiceID" for="invoice_date">
-                                        <i class="bi bi-calendar3"></i>
-                                    </label>
+                                        id="invoice_date" readonly > --}}
+
+                                    <input type="date" name="invoice_date"
+                                        class="form-control textColor inputBorderRedius"
+                                        value="{{ isset($invoiceData->invoice_date) ? $invoiceData->invoice_date : date('Y-m-d') }}"
+                                         min="{{ date('Y-m-d') }}" required id="invoice_current_date">
+
+                                        {{-- <label class="invoiceID" for="invoice_date">
+
+                                            <i class="bi bi-calendar3 d-none"></i>
+                                        </label> --}}
                                 </div>
                                 <div id="invoice_date_error" class="invalid-feedback"></div>
                             </div>
@@ -393,13 +400,20 @@
                             @endphp
                             <div class="col-sm-8 ">
                                 <div class="input-group">
-                                    <input type="text" name="invoice_dou_date"
+                                    {{-- <input type="text" name="invoice_dou_date"
                                         class="form-control textColor inputBorderRedius"
                                         value="@if (isset($invoiceData->invoice_dou_date)) {{ $invoiceData->invoice_dou_date }}@else {{ $date->format('Y-m-d') }} @endif"
-                                        id="invoice_dou_date" readonly>
-                                    <label class="invoiceID" for="invoice_dou_date">
+                                        id="invoice_dou_date" readonly> --}}
+
+
+                                    <input type="date" id="invoice_date_due" name="invoice_dou_date"
+                                        class="form-control textColor inputBorderRedius"
+                                        value="@if (isset($invoiceData->invoice_dou_date)) {{ $invoiceData->invoice_dou_date }}@else {{ $date->format('Y-m-d') }} @endif"
+                                         min="{{ date('Y-m-d') }}" >
+
+                                    {{-- <label class="invoiceID" for="invoice_dou_date">
                                         <i class="bi bi-calendar3"></i>
-                                    </label>
+                                    </label> --}}
                                     <div id="invoice_dou_date_error" class="invalid-feedback"></div>
                                 </div>
                             </div>
