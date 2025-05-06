@@ -644,4 +644,137 @@ class InvoiceController extends Controller
 
         return response()->json(['message' => $id]);
     }
+
+    public function show_invoice()
+    {
+        // Set the path to your font directory
+        $fontPath = public_path('fonts/');
+
+        // Configure MPDF with proper Bangla font support
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+            'fontDir' => [
+                $fontPath,
+                // Add any additional font directories if needed
+            ],
+            'fontdata' => [
+                'solaimanlipi' => [
+                    'R' => 'SolaimanLipi_20-04-07.ttf', // Make sure the filename matches exactly
+                    'useOTL' => 0xFF, // Enable all OpenType Layout features
+                    'useKashida' => 75, // Enable kashida for justification
+                ],
+                // You can add fallback fonts here
+                'bangla' => [
+                    'R' => 'SolaimanLipi_20-04-07.ttf', // Another common Bangla font
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'solaimanlipi',
+            'autoScriptToLang' => true, // Automatically switch to appropriate language script
+            'autoLangToFont' => true,   // Automatically switch to appropriate font
+        ]);
+
+        // Set metadata for better language support
+        $mpdf->SetTitle('Invoice');
+        $mpdf->SetAuthor('Your Company');
+        $mpdf->SetSubject('Invoice');
+        $mpdf->SetKeywords('Invoice, Bangla');
+
+        // Set the language
+        $mpdf->baseScript = 1;
+        $mpdf->autoVietnamese = true;
+        $mpdf->autoArabic = true;
+
+        $html = view('frontend.invoices.invoice_two')->render();
+
+        // Add CSS to ensure proper rendering
+        $stylesheet = '
+        <style>
+            body {
+                font-family: solaimanlipi;
+                margin: 0;
+                padding: 0;
+                direction: ltr; /* Change to rtl if needed */
+                transform: scale(0.95); /* Scale down slightly */
+                transform-origin: top left;
+                width: 100%;
+            }
+
+            .invoice-container {
+                width: 80%;
+                margin: 20px auto;
+                border: 1px solid #ccc;
+                padding: 20px;
+            }
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .company-info {
+                text-align: left;
+            }
+            .invoice-number {
+                text-align: right;
+            }
+            // .from-to {
+            //     display: flex;
+            //     justify-content: space-between;
+            //     margin-bottom: 20px;
+            // }
+            // .address-block {
+            //     flex: 1;
+            //     padding: 10px;
+            //     border: 1px solid #eee;
+            // }
+
+            .form-section{
+                margin-bottom: 20px;
+                font-family: solaimanlipi;
+            }
+            .form-section .td{
+                padding: 10px;
+                border: 1px solid #eee;
+                vertical-align: top;
+            }
+
+
+            .items-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .items-table th, .items-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            .total {
+                text-align: right;
+                margin-bottom: 10px;
+            }
+            .instructions {
+                margin-top: 20px;
+                border: 1px solid #eee;
+                padding: 10px;
+            }
+
+            .a4-container {
+                background-color: white;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                margin: auto;
+                padding: 20px;
+            }
+
+
+        </style>
+        ';
+
+        $mpdf->WriteHTML($stylesheet . $html);
+        $mpdf->Output('invoice.pdf', 'I');
+    }
 }

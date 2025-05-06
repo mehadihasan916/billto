@@ -82,6 +82,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // just chek route
     Route::get('/preview/image/{id}', [InvoiceController::class, 'previewImage']);
+
+    // show invoice
+    Route::get('/show-invoice', [InvoiceController::class, 'show_invoice'])->name('invoice.show');
 });
 Route::get('/test/bill', [DashboardController::class, 'test_bill']);
 
