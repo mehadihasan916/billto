@@ -1,0 +1,98 @@
+
+
+.invoice-container {
+    max-width: 794px;
+    height: 1123px;
+    margin: auto;
+    padding: 20px;
+}
+
+.invoice-container .section-wrap {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+
+
+
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.company-info {
+    text-align: left;
+}
+
+.invoice-number {
+    text-align: right;
+}
+
+/* invoice form section  */
+
+
+
+.form-logo {
+    width: 100px;
+    height: 100px;
+}
+
+.form-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.form-section {
+    margin-bottom: 20px;
+    font-family: solaimanlipi;
+}
+
+.form-section .first-td {
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    vertical-align: top;
+}
+
+.form-section .second-td {
+    padding: 10px;
+    border: 1px solid #eee;
+    vertical-align: top;
+}
+
+
+/* invoice form section end */
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.items-table th,
+.items-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.total {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.instructions {
+    margin-top: 20px;
+    border: 1px solid #eee;
+    padding: 10px;
+}
+
