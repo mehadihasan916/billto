@@ -62,7 +62,7 @@
                 <p class="invoice_p">{{__('messages.Start_creating_your_professional_bill')}}</p>
             </div>
              <div class="row invoice_template_margin" id="invoice_template_margin1">
-              
+
             </div>
         </div>
     </section>
@@ -329,8 +329,8 @@
                                     <div class="text-muted margingPlanP">
                                         <img class="none_image" src="{{ asset('assets/frontend/img/icon/tik.png') }}"
                                             alt="" />
-                                        Invoice
-                                        Template: <strong> {{ $sub_package_free->price }}</strong>
+                                        Invoice Template: <strong>Default</strong>
+                                         {{-- <strong> {{ $sub_package_free->price }}</strong> --}}
                                     </div>
                                     <div class="text-muted margingPlanP">
                                         <img class="none_image" src="{{ asset('assets/frontend/img/icon/tik.png') }}"

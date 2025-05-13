@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/css/flag-icon.min.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+
     <!-- Place favicon.ico in the root directory -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/normalize.css') }}">
     <!-- Bootstrap v5.1.3  -->

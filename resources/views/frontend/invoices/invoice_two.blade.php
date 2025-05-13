@@ -1,25 +1,131 @@
+
+<style>
+
+    .invoice-container {
+        max-width: 794px;
+        height: 1123px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .invoice-container .section-wrap {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+
+
+
+
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .company-info {
+        text-align: left;
+    }
+
+    .invoice-number {
+        text-align: right;
+    }
+
+    /* invoice form section  */
+
+
+
+    .form-logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .form-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .form-section {
+        margin-bottom: 20px;
+        font-family: solaimanlipi;
+    }
+
+    .form-section .first-td {
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        vertical-align: top;
+    }
+
+    .form-section .second-td {
+        padding: 10px;
+        border: 1px solid #eee;
+        vertical-align: top;
+    }
+
+
+    /* invoice form section end */
+
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .items-table th,
+    .items-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .total {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .instructions {
+        margin-top: 20px;
+        border: 1px solid #eee;
+        padding: 10px;
+    }
+
+
+</style>
 <div class="invoice-container a4-container ">
    <div  class="section-wrap position-relative " >
         <div >
 
             <div class="d-flex justify-content-between  py-2 overflow-hidden">
-                <div class="col-4 d-flex align-items-center ">
-                    <img class="p-2  rounded-circle shadow me-2" style="width: 50px; height:50px " src="https://www.svgrepo.com/show/530660/genetic-algorithm.svg" alt="Logo" class="logo">
+                <div class="col-4 d-flex  align-items-center ">
+                    {{-- <div class="rounded-circle shadow p-2 me-2" style="width: 60px; height:60px ">
+                         <img  style="width: 50px; height:50px "  src="https://www.svgrepo.com/show/530660/genetic-algorithm.svg" alt="Logo" >
+                    </div> --}}
+                    <div class="rounded-circle shadow p-2 me-2" style="width: 60px; height:60px; display: flex; justify-content: center; align-items: center;">
+                        <img style="width: 50px; height:50px; object-fit: contain; max-width: 100%; max-height: 100%;" src="https://www.svgrepo.com/show/530660/genetic-algorithm.svg" alt="Logo" >
+                    </div>
                     <strong>Ace Studio</strong>
 
                 </div>
                 <div class="col-8 d-flex align-items-center justify-content-end gap-5">
                     <div>
                         <span class="text-muted fw-bold">Invoice Number</span><br>
-                        <span class="fw-bold">000001</span>
+                        <span class="fw-bold">{{ $data->invoice_id }}</span>
                     </div>
                     <div>
                         <span class="text-muted fw-bold">Issued</span><br>
-                        <span class="fw-bold">01/24/24</span>
+                        <span class="fw-bold">{{ $data->invoice_date }}</span>
                     </div>
                     <div>
                         <span class="text-muted fw-bold">Due Date</span><br>
-                        <span class="fw-bold">01/30/24</span>
+                        <span class="fw-bold">{{ $data->invoice_dou_date }}</span>
                     </div>
 
                 </div>
@@ -27,7 +133,7 @@
         </div>
 
 
-        <table class="form-section" width="100%" cellspacing="0" cellpadding="0" >
+        <table class="form-section mt-3" width="100%" cellspacing="0" cellpadding="0" >
 
             <tr>
                 <!-- From Address -->
@@ -49,38 +155,29 @@
                     </div>
 
                     <div class="d-flex gap-1 align-items-end mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px " fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 30px; height: 30px" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                         </svg>
 
                         <div>
-                            <span class="text-muted">Address:</span>
-                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">Janata Housing</p>
+                            {{-- <span class="text-muted">Address:</span> --}}
+                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">{{ $data->invoice_form }}</p>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-1 align-items-end mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px " fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 0 0-8.862 12.872M12.75 3.031a9 9 0 0 1 6.69 14.036m0 0-.177-.529A2.25 2.25 0 0 0 17.128 15H16.5l-.324-.324a1.453 1.453 0 0 0-2.328.377l-.036.073a1.586 1.586 0 0 1-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 0 1-5.276 3.67m0 0a9 9 0 0 1-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
-                        </svg>
 
-                        <div>
-                            <span class="text-muted">City, State, Zip:</span>
-                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">Mohammedpur, Dhaka</p>
-                        </div>
-                    </div>
 
                     <div class="d-flex gap-1 align-items-end mb-3">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px " fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                        <svg xmlns="http://www.w3.org/2000/svg"  style="width: 30px; height: 30px" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75v-4.5m0 4.5h4.5m-4.5 0 6-6m-3 18c-8.284 0-15-6.716-15-15V4.5A2.25 2.25 0 0 1 4.5 2.25h1.372c.516 0 .966.351 1.091.852l1.106 4.423c.11.44-.054.902-.417 1.173l-1.293.97a1.062 1.062 0 0 0-.38 1.21 12.035 12.035 0 0 0 7.143 7.143c.441.162.928-.004 1.21-.38l.97-1.293a1.125 1.125 0 0 1 1.173-.417l4.423 1.106c.5.125.852.575.852 1.091V19.5a2.25 2.25 0 0 1-2.25 2.25h-2.25Z" />
                         </svg>
 
 
                         <div>
-                            <span class="text-muted">Tax Id:</span>
-                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">93401RS</p>
+                            {{-- <span class="text-muted">PIO:</span> --}}
+                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">{{ $data->invoice_po_number }}</p>
                         </div>
                     </div>
                 </td>
@@ -110,37 +207,28 @@
                     </div>
 
                     <div class="d-flex gap-1 align-items-end mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px " fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 30px; height: 30px" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                         </svg>
 
                         <div>
-                            <span class="text-muted">Address:</span>
-                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">Probal Housing</p>
+                            {{-- <span class="text-muted">Address:</span> --}}
+                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">{{ $data->invoice_to }}</p>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-1 align-items-end mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px " fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 0 0-8.862 12.872M12.75 3.031a9 9 0 0 1 6.69 14.036m0 0-.177-.529A2.25 2.25 0 0 0 17.128 15H16.5l-.324-.324a1.453 1.453 0 0 0-2.328.377l-.036.073a1.586 1.586 0 0 1-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 0 1-5.276 3.67m0 0a9 9 0 0 1-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
-                        </svg>
 
-                        <div>
-                            <span class="text-muted">City, State, Zip:</span>
-                            <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">Chittagong, Bangladesh</p>
-                        </div>
-                    </div>
 
                     <div class="d-flex gap-1 align-items-end mb-3">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px; height: 35px " fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 30px; height: 30px" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
                         </svg>
 
 
                         <div>
-                            <span class="text-muted">Tax Id:</span>
+                            {{-- <span class="text-muted">Tax Id:</span> --}}
                             <p class="p-2 m-0 shadow-sm rounded-full fw-bold" style="border-radius:15px;">93401RS</p>
                         </div>
                     </div>
@@ -198,9 +286,21 @@
                 ওয়ালেট: TY7MzheAre4bOcD6zEk14Q3PZ3PfJ4ybcs
             </div>
             <div class="">
-                <img width="100px" height="auto" src="https://www.awesomesuite.com/sign/signature/barrack-obama2.webp" alt="">
-                <p class="m-0"><strong>Signature</strong></p>
+                {{-- <img width="100px" height="auto" src="https://www.awesomesuite.com/sign/signature/barrack-obama2.webp" alt=""> --}}
+                @if ($userLogoAndTerms->signature != '')
+                    <div class="mx-auto ">
+                        @if($data->invoice_signature=='signature_add')
+                        <img src="{{ asset('uploads/signature/' . $userLogoAndTerms->signature) }}" alt=""
+                            width="100px" height="auto" style="object-fit:contain;" />
+                            <img width="100px" height="auto" src="{{ asset('uploads/signature/' . $userLogoAndTerms->signature) }}" alt="">
+                            <p class="m-0"><strong>Signature</strong></p>
+                        @endif
+                    </div>
+
+                @endif
+
             </div>
+
         </div>
 
         {{-- <div>

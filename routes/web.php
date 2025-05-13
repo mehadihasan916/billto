@@ -3,7 +3,6 @@
 use App\Http\Controllers\frontend\DashboardController;
 use Carbon\Carbon;
 use App\Models\Invoice;
-use App\Models\PaymentGetway;
 use Illuminate\Support\Facades\DB;
 use App\Models\SubscriptionPackage;
 use App\Models\ComplateInvoiceCount;
@@ -15,7 +14,10 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Frontend\PagesController;
 use App\Http\Controllers\Frontend\SubscriptionPackContoller;
+use App\Http\Controllers\Payment\StripeController;
 use App\Models\SendMail_info;
+use Illuminate\Http\Request;
+use Laravel\Cashier\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +87,18 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // show invoice
     Route::get('/show-invoice', [InvoiceController::class, 'show_invoice'])->name('invoice.show');
+
+
+
+
+    // Create Payment Intent (AJAX)
+    Route::post('/create-payment-intent', [StripeController::class, 'createIntent']);
+
+    // Process payment
+    Route::post('/process-payment', [StripeController::class, 'processPayment']);
+
+    // Success page
+    Route::get('/payment/success', [StripeController::class, 'success'])->name('payment.success');
 });
 Route::get('/test/bill', [DashboardController::class, 'test_bill']);
 

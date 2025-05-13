@@ -163,7 +163,7 @@
                                 <h3 class="heding"> {{ $sub_package_free->packageName }}</h3>
                                 <h1 class="priceColor">${{ $sub_package_free->price }}<span class="month">/month</span>
                                 </h1>
-                                
+
                                 <div class="emty_margin"></div>
                                 <div class="text-start text_start ">
                                     <div class="text-muted margingPlanP">
@@ -215,10 +215,27 @@
                                     @endforeach
 
                                 </div>
-                                <div class="pricing_btn_design">
+                                {{-- <div class="pricing_btn_design">
                                     <a href="{{ url('payment-gateway', $sub_package_free->id) }}"><button
                                             class="btnCss">Submit</button></a>
-                                </div>
+                                </div> --}}
+
+                                {{-- stripe form  --}}
+                                <form id="payment-form" class="needs-validation px-2 mb-2" novalidate>
+                                    @csrf
+                                    <div class="mb-3">
+                                        {{-- <label for="card-element" class="form-label">Credit/Debit Card</label> --}}
+                                        <div id="card-element" class="form-control p-2" style="height: 40px;">
+                                            <!-- Stripe injects card fields here -->
+                                        </div>
+                                        <div id="card-errors" class="invalid-feedback" role="alert"></div>
+                                    </div>
+
+                                    <button id="submit-button" class="btn btn-dark w-100 py-2">
+                                        <span id="button-text">Pay Now</span>
+                                        <span id="button-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @endforeach
@@ -229,7 +246,8 @@
 
             </div>
         </div>
-        {{-- ----------------- javascript kora ache--------  --}}
+
+        {{-- ----------------- javascript kora ache----------}}
         {{-- <div class="row my-2">
         <div class="col-sm-7 ">
             @foreach ($subscribe_package as $subscribe)
@@ -252,10 +270,10 @@
             </div>
 
             @endforeach
-        </div>
+        </div> --}}
         <div class="col-sm-5">
             <div class="card">
-                <form action="" id="getway_setup" method="post">
+            {{-- <form action="" id="getway_setup" method="post">
                     @csrf
                 <div class="card-body">
                     <label for="">Payment Amount</label>
@@ -267,34 +285,160 @@
                         <button class="btn btn-success" id="submit_button" disabled >Submit</button>
                     </div>
                 </div>
-            </form>
+            </form> --}}
+
+                {{-- <form id="payment-form" class="needs-validation px-2" novalidate>
+                    @csrf
+                    <div class="mb-3">
+                        <label for="card-element" class="form-label">Credit/Debit Card</label>
+                        <div id="card-element" class="form-control p-2" style="height: 40px;">
+                            <!-- Stripe injects card fields here -->
+                        </div>
+                        <div id="card-errors" class="invalid-feedback" role="alert"></div>
+                    </div>
+
+                    <button id="submit-button" class="btn btn-primary w-100 py-2">
+                        <span id="button-text">Pay Now</span>
+                        <span id="button-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+                </form> --}}
             </div>
 
 
         </div>
-    </div> --}}
+    </div>
 
 
     </section>
 
+    <style>
+        /* Custom stripe element styling */
+        .StripeElement {
+            box-sizing: border-box;
+            height: 100%;
+            padding: 6px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .StripeElement--focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .StripeElement--invalid {
+            border-color: #dc3545;
+        }
+    </style>
+
     <script>
-        // $( "#new_package_price" ).bind( "keyup", function() {
-        //     var package_price = document.getElementById('package_price').value;
-        //     var new_package_price = document.getElementById('new_package_price').value;
+        $( "#new_package_price" ).bind( "keyup", function() {
+            var package_price = document.getElementById('package_price').value;
+            var new_package_price = document.getElementById('new_package_price').value;
 
-        //   if(package_price== new_package_price){
+          if(package_price== new_package_price){
 
-        //     $('#new_package_price').addClass("is-valid");
-        //     $('#new_package_price').removeClass("is-invalid");
-        //     document.getElementById("submit_button").disabled = false;
-        //     document.getElementById("message").innerHTML = "";
-        //   }else{
-        //     $('#new_package_price').addClass("is-invalid");
-        //     document.getElementById("submit_button").disabled = true;
-        //     document.getElementById("message").innerHTML = "Please set Correct value";
-        //   }
-        // });
+            $('#new_package_price').addClass("is-valid");
+            $('#new_package_price').removeClass("is-invalid");
+            document.getElementById("submit_button").disabled = false;
+            document.getElementById("message").innerHTML = "";
+          }else{
+            $('#new_package_price').addClass("is-invalid");
+            document.getElementById("submit_button").disabled = true;
+            document.getElementById("message").innerHTML = "Please set Correct value";
+          }
+        });
     </script>
+
+
+    {{-- stripe  --}}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('{{ env("STRIPE_KEY") }}');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card', {
+        style: {
+            base: {
+                fontSize: '16px',
+                color: '#495057',
+            }
+        }
+    });
+    cardElement.mount('#card-element');
+
+    const form = document.getElementById('payment-form');
+    const cardErrors = document.getElementById('card-errors');
+    const submitButton = document.getElementById('submit-button');
+    const buttonText = document.getElementById('button-text');
+    const buttonSpinner = document.getElementById('button-spinner');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Show loading state
+        submitButton.disabled = true;
+        buttonText.classList.add('d-none');
+        buttonSpinner.classList.remove('d-none');
+        cardErrors.classList.add('d-none');
+
+        // Get PaymentIntent client secret
+        const { clientSecret } = await fetch('/create-payment-intent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            },
+            body: JSON.stringify({
+                package_id: '{{ $subscribe_package[0]->id }}',
+                package_name: '{{ $subscribe_package[0]->packageName }}',
+                package_price: '{{ $subscribe_package[0]->price }}',
+            })
+
+        }).then(res => res.json());
+
+        // Confirm payment
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: cardElement,
+            }
+        });
+
+        if (error) {
+            cardErrors.textContent = error.message;
+            cardErrors.classList.remove('d-none');
+            submitButton.disabled = false;
+            buttonText.classList.remove('d-none');
+            buttonSpinner.classList.add('d-none');
+        } else if (paymentIntent.status === 'succeeded') {
+            // Send to success page (in production, wait for webhook)
+            fetch('/process-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                },
+                body: JSON.stringify({
+                    stripe_id: paymentIntent.id,
+                    package_id: '{{ $subscribe_package[0]->id }}',
+                    package_name: '{{ $subscribe_package[0]->packageName }}',
+                    package_price: '{{ $subscribe_package[0]->price }}',
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // success, now redirect
+                // window.location.href = '/payment/success';
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                }
+            })
+            .catch(error => {
+                console.error('Payment failed:', error);
+            });
+
+
+        }
+    });
+</script>
 
 
 

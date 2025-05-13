@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "doctrine/dbal": "^3.3",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/cashier": "^15.6",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.5",

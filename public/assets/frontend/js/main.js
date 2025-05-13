@@ -580,45 +580,45 @@ function saveData(id) {
 $("#getway_setup").submit(function (e) {
     e.preventDefault();
     const fd = new FormData(this);
-    // var new_package_price = document.getElementById('new_package_price').value;
+    var new_package_price = document.getElementById('new_package_price').value;
     var package_price = document.getElementById('package_price').value;
     var package_id = document.getElementById('package_id').value;
     // var auth_user_id = document.getElementById('auth_user_id').value;
     // alert(package_id)
 
-    // $.ajax({
-    //     url: '/payment/store',
-    //     type: 'post',
-    //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-    //     data: {
-    //         new_package_price:new_package_price,
-    //         package_id:package_id,
-    //         auth_user_id:auth_user_id,
-    //         package_price:package_price
-    //     },
-    //     dataType: 'json',
-    //     success: function (responce) {
+    $.ajax({
+        url: '/payment/store',
+        type: 'post',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data: {
+            new_package_price:new_package_price,
+            package_id:package_id,
+            auth_user_id:auth_user_id,
+            package_price:package_price
+        },
+        dataType: 'json',
+        success: function (responce) {
 
-    //        if(responce.message==='error'){
-    //         okButton.fire({
-    //             icon: 'error',
-    //             title: 'Please type Correct value',
-    //           })
-    //        }else{
-    //         button =
-    //         Toast.fire({
-    //           icon: 'success',
-    //           title: ' Package succesfuly purchase ',
+           if(responce.message==='error'){
+            okButton.fire({
+                icon: 'error',
+                title: 'Please type Correct value',
+              })
+           }else{
+            button =
+            Toast.fire({
+              icon: 'success',
+              title: ' Package succesfuly purchase ',
 
-    //         })
-    //           $('#new_package_price').removeClass("is-valid");
-    //           document.getElementById("submit_button").disabled = true;
-    //           document.getElementById('new_package_price').value="";
-    //        }
+            })
+              $('#new_package_price').removeClass("is-valid");
+              document.getElementById("submit_button").disabled = true;
+              document.getElementById('new_package_price').value="";
+           }
 
-    //     },
+        },
 
-    // });
+    });
 
 
 

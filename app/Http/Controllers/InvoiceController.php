@@ -331,6 +331,7 @@ class InvoiceController extends Controller
     // new version of store function
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'currency' => 'required|max:30',
             'invoice_form' => 'required|max:90',
@@ -650,71 +651,63 @@ class InvoiceController extends Controller
     {
         $data  = Invoice::find(48);
         $productsDatas = Product::where('invoice_id', 48)->get();
-        // Set the path to your font directory
-        $fontPath = public_path('fonts/');
+        $userLogoAndTerms = User::where('id', Auth::user()->id)->get([
+            'invoice_logo',
+            'terms',
+            'signature',
+            'name',
+            'email'
 
-        // Configure MPDF with proper Bangla font support
-        // $mpdf = new \Mpdf\Mpdf([
-        //     'mode' => 'utf-8',
-        //     'format' => 'A4',
-        //     'orientation' => 'P',
-        //     'fontDir' => [
-        //         $fontPath,
-        //         // Add any additional font directories if needed
-        //     ],
-        //     'fontdata' => [
-        //         'solaimanlipi' => [
-        //             'R' => 'SolaimanLipi_20-04-07.ttf', // Make sure the filename matches exactly
-        //             'useOTL' => 0xFF, // Enable all OpenType Layout features
-        //             'useKashida' => 75, // Enable kashida for justification
-        //         ],
-        //         // You can add fallback fonts here
-        //         'bangla' => [
-        //             'R' => 'SolaimanLipi_20-04-07.ttf', // Another common Bangla font
-        //             'useOTL' => 0xFF,
-        //             'useKashida' => 75,
-        //         ],
-        //     ],
-        //     'default_font' => 'solaimanlipi',
-        //     'autoScriptToLang' => true, // Automatically switch to appropriate language script
-        //     'autoLangToFont' => true,   // Automatically switch to appropriate font
-        // ]);
+        ])->first();
 
-        // // Set metadata for better language support
-        // $mpdf->SetTitle('Invoice');
-        // $mpdf->SetAuthor('Your Company');
-        // $mpdf->SetSubject('Invoice');
-        // $mpdf->SetKeywords('Invoice, Bangla');
-
-        // // Set the language
-        // $mpdf->baseScript = 1;
-        // $mpdf->autoVietnamese = true;
-        // $mpdf->autoArabic = true;
+        // dd($userLogoAndTerms);
 
         // Add CSS to ensure proper rendering
         $cssFilePath = public_path('assets/frontend/css/invoices/invoice_two.css');
-        $stylesheet = file_get_contents($cssFilePath);
-        $html = view('frontend.invoices.invoice_two', compact('productsDatas', 'data'))->render();
+        // $stylesheet = file_get_contents($cssFilePath);
+        $stylesheet = '';
+        $html = view('invoices.preview_invoice.invoice_pre_one', compact('productsDatas', 'data', 'userLogoAndTerms'))->render();
 
 
-
-        // $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-        // $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-
-
-        // // dd($productsDatas);
-        // $mpdf->Output('invoice.pdf', 'I');
 
         $bootstrap = '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">';
         $styledHtml = "$bootstrap<style>$stylesheet</style>$html";
 
-        return response($styledHtml);
+
+        // dd($data);
+        // return response($styledHtml);
+        // dd($data);
         // Browsershot pdf
-        Browsershot::html($styledHtml)
+        $pdf = Browsershot::html($styledHtml)
             ->setOption('args', ['--no-sandbox'])
             ->showBackground()
             ->format('A4')
-            ->save(storage_path('app/public/test.pdf'));
+            // ->save(storage_path('app/public/test.pdf'));
+            ->pdf();
+
+        $data['due'] = 500;
+        $data['email'] = "mhshakil06@gmail.com";
+        $data['subject'] = "subject";
+        $data['body'] = "body";
+        $data['template_id'] = "4";
+        $data['userInvoiceLogo']  = user::where('id', Auth::user()->id)->get(['invoice_logo', 'terms', 'signature'])->first();
+
+
+
+        Mail::raw('Please find the attached invoice.', function ($message) use ($data, $pdf) {
+            $message->to($data['email'])
+                ->subject($data['subject'])
+                ->attachData($pdf, 'Invoice.pdf', [
+                    'mime' => 'application/pdf',
+                ]);
+        });
+
+
+
+
+        return response($pdf)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="document.pdf"');
 
 
 

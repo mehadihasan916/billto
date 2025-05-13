@@ -17,6 +17,7 @@ class CreatePaymentGetwaysTable extends Migration
             $table->id();
             $table->integer('user_id')->nullable();
             $table->string('amount')->nullable();
+            $table->string('stripe_id')->nullable();
             $table->string('subscription_package_id')->nullable();
             $table->string('organization_package_id')->nullable();
             $table->timestamps();
