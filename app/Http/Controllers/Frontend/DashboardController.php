@@ -16,6 +16,8 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\InvcPymntTransction;
+use App\Models\PaymentGetway;
+use App\Models\SubscriptionPackage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
@@ -64,7 +66,13 @@ class DashboardController extends Controller
             'terms',
         ])->first();
 
-        return view('frontend.create-invoice')->with(compact('invoiceData', 'user_logo_terms', 'invoiceCount', 'requesting_advance_amount', 'template_id', 'invoice_template', 'template_id_check', 'sendByMail_count', 'Total_Amount_conut', 'invoiceCountNew', 'invoice_template_not_com'));
+        $packages = [];
+        if (Auth::check()) {
+            $find_subscription = PaymentGetway::where('user_id', auth()->user()->id)->first();
+            $packages = SubscriptionPackage::where('id', 1)->orWhere('id', $find_subscription->subscription_package_id)->get();
+        }
+
+        return view('frontend.create-invoice')->with(compact('invoiceData', 'user_logo_terms', 'invoiceCount', 'requesting_advance_amount', 'template_id', 'invoice_template', 'template_id_check', 'sendByMail_count', 'Total_Amount_conut', 'invoiceCountNew', 'invoice_template_not_com', 'packages'));
     }
 
 

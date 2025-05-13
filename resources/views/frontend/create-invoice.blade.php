@@ -776,21 +776,46 @@
                 @if (!$template_id == '')
                     <div class="row text-center mb-4" id="load_data_select">
                         @include('frontend.craete_data_select_tmp')
-
                     </div>
                 @else
                     <div class="row text-center mb-4 " id="load_data">
-                         @include('frontend.craet_page_load_data')
+                         {{-- @include('frontend.craet_page_load_data') --}}
+
+                        @foreach ($packages as $packege)
+                            @foreach ($packege->templates as $template)
+                                <label class="custom-radio  col-sm-6 col-md-4 col-lg-3 mb-4 ">
+                                    <div class=" card shadow border-0">
+                                        <span class="pakages_name">
+                                            @if (Config::get('languages')[App::getLocale()]['flag-icon'] == 'bd')
+                                                {{ $packege->packageNamebn ?? '' }}
+                                            @else
+                                                {{ $packege->packageName ?? '' }}
+                                            @endif
+                                        </span>
+                                        <input type="radio" name="template_name" value="{{ $template->id }}"
+                                            @if ($template_id_check->id == $template->id) checked @else @endif />
+                                        <span class="radio-btn"> <i class="bi bi-check-lg"></i>
+                                            <div class="hobbies-icon tempResponsive">
+                                                <img src=" {{ asset('uploads/template/' . $template->templateImage) }}" alt="">
+                                            </div>
+                                        </span>
+                                    </div>
+                                </label>
+                            @endforeach
+                        @endforeach
+
+
+
                     </div>
                 @endif
 
             </div>
 
-            <!--<div id="load_data_message" class="mb-3 " style="width: 100%">-->
-            <!--    <div style='padding:1px;margin-top: 10px; text-align:center;'>-->
-            <!--        <img src="{{ asset('assets/frontend/img/loadding.gif') }}" alt="" style="width:2%; ">-->
-            <!--    </div>-->
-            <!--</div>-->
+            {{-- <div id="load_data_message" class="mb-3 " style="width: 100%">
+                <div style='padding:1px;margin-top: 10px; text-align:center;'>
+                    <img src="{{ asset('assets/frontend/img/loadding.gif') }}" alt="" style="width:2%; ">
+                </div>
+            </div> --}}
         </div>
     </section>
     </form>

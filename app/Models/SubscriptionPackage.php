@@ -20,5 +20,8 @@ class SubscriptionPackage extends Model
         'limitInvoiceGeneratebn',
     ];
 
-
+    public function templates()
+    {
+        return $this->belongsToMany(InvoiceTemplate::class, 'subscription_package_templates', 'subscriptionPackageId', 'template');
+    }
 }

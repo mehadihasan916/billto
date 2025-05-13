@@ -15,6 +15,9 @@ use App\Models\InvoiceTemplate;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Models\ComplateInvoiceCount;
+use App\Models\PaymentGetway;
+use App\Models\SubscriptionPackage;
+use App\Models\SubscriptionPackageTemplate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
@@ -66,7 +69,7 @@ class InvoiceController extends Controller
 
             $invoiceCountNew = Invoice::where('user_id', Auth::user()->id)->count();
             $invoiceCountNew += 1;
-            $invoice_template = InvoiceTemplate::get();
+
             $invoice_template_not_com = InvoiceTemplate::where('company', 'not company')->get();
 
             $user_logo_terms = User::where('id', Auth::user()->id)->get([
@@ -76,10 +79,26 @@ class InvoiceController extends Controller
             ])->first();
 
             $session = Session::get('session_invoice_id');
+
+            $packages = [];
+            if (Auth::check()) {
+                if (Auth::user()->email === 'womenindigitalbd@gmail.com') {
+                    $packages = SubscriptionPackage::all();
+                } else {
+                    $find_subscription = PaymentGetway::where('user_id', auth()->user()->id)->first();
+                    $packages = SubscriptionPackage::where('id', 1)->orWhere('id', $find_subscription->subscription_package_id)->get();
+                }
+            }
+
+
+
+
+
+
             if ($session != "") {
                 return redirect()->to('/edit/invoices/' . $session);
             } else {
-                return view('frontend.create-invoice')->with(compact('all', 'lastnum', 'lastInvoice', 'user_logo_terms', 'invoiceCountNew', 'template_id', 'invoice_template', 'invoice_template_not_com', 'template_id_check', 'data'));
+                return view('frontend.create-invoice')->with(compact('all', 'lastnum', 'lastInvoice', 'user_logo_terms', 'invoiceCountNew', 'template_id', 'packages', 'invoice_template_not_com', 'template_id_check', 'data',));
             }
         } else {
 
@@ -109,7 +128,10 @@ class InvoiceController extends Controller
 
             ])->first();
 
-            return view('frontend.create-invoice')->with(compact('user_logo_terms', 'lastInvoice', 'invoiceCountNew', 'template_id', 'invoice_template', 'invoice_template_not_com', 'template_id_check', 'data'));
+            $packages = SubscriptionPackage::all();
+
+
+            return view('frontend.create-invoice')->with(compact('user_logo_terms', 'lastInvoice', 'invoiceCountNew', 'template_id', 'invoice_template', 'invoice_template_not_com', 'template_id_check', 'data', 'packages'));
         }
     }
 
