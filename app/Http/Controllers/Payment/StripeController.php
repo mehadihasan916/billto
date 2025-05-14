@@ -75,6 +75,7 @@ class StripeController extends Controller
                 ['user_id' => auth()->id()],
                 [
                     'current_invoice_total' => 0,
+                    'invoice_count_total' => 0,
                     'created_at' => Carbon::now(),
                 ]
             );
