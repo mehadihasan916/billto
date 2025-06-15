@@ -309,7 +309,7 @@
                                                 <tbody>
                                                     @foreach($latestDataInvoices as $key => $latestDataInvoice)
                                                     <tr class="data_table_id preview_image_user" data-bs-toggle="modal" data-bs-target="#staticBackdrop_previw">
-                                                        <th scope="row">{{ ++$key }}</th>
+                                                        <th scope="row">{{ ++$key . ' - '. $latestDataInvoice->id }}</th>
                                                         <td>{!! Str::limit($latestDataInvoice->invoice_to, 20, ' ...') !!}</td>
                                                         <td>{{ $latestDataInvoice->invoice_date }}</td>
                                                         <td>

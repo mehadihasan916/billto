@@ -1,7 +1,7 @@
 
     {{-- four invoice  --}}
 
-    <style>
+    {{-- <style>
         * {
             padding: 0;
             margin: 0;
@@ -164,9 +164,10 @@
 
     <title>Billto.io</title>
 
-    <body>
+    <body> --}}
 
-        <div class="invoice_body page" size="A4" style="background: url('assets/vector-invoice/vector3.png') no-repeat scroll;">
+        <div class="invoice_body page" size="A4"
+            style="background: url('assets/vector-invoice/vector3.png') no-repeat scroll;">
             <section class="first_section">
                 <div class="logo_area" style="margin-left:50px;">
                     <div class="c">
@@ -197,9 +198,10 @@
                     </div>
                     <div class="i_title">
                         @if($invoiceData->invoice_logo!="")
-                         <img src="{{ public_path('storage/invoice/logo/'.$invoiceData->invoice_logo) }}" alt="img" style="width: 70px">
+                        <img src="{{ public_path('storage/invoice/logo/'.$invoiceData->invoice_logo) }}" alt="img"
+                            style="width: 70px">
                         @endif
-                         <h1>INVOICE</h1>
+                        <h1>INVOICE</h1>
                     </div>
                     <div class="i_sub_title">
                         <div class="a">
@@ -219,7 +221,7 @@
             </section>
 
             <style>
-                .border{
+                .border {
                     border-left: 1px solid #FFF;
                     border-right: 1px solid #FFF;
                     border-bottom: 1px solid rgb(255, 255, 255);
@@ -263,7 +265,7 @@
                                         {{number_format( $product_detail->product_amount,2)}}</td>
                                 </tr>
                                 @endforeach
-                              {{--  <tr>
+                                {{--  <tr>
                                     <td class="border"
                                         style="border-left:none; border-top:none; border-right:none; padding-left:5px; padding-top:10px; padding-bottom:10px; text-align:left; width:20%;  font-weight: 400; font-size: 16px; color: #686868; ">
                                         01</td>
@@ -294,21 +296,24 @@
                             </tbody>
                         </table>
                         <style>
-                            .empty_div ul li{
-                                list-style-type:none;
+                            .empty_div ul li {
+                                list-style-type: none;
                                 padding: 10px;
 
                             }
-                            .table_div ul li{
-                                list-style-type:none;
+
+                            .table_div ul li {
+                                list-style-type: none;
                                 padding: 10px;
 
                             }
-                            .empty_div{
+
+                            .empty_div {
                                 margin-left: 410px;
                                 width: 135px;
                             }
-                            .table_div{
+
+                            .table_div {
                                 width: 118px;
                             }
                         </style>
@@ -337,16 +342,19 @@
 
                 <div class="right_Side_bar ">
 
-                        <div class="f">
-                            <div class="thanks" style="padding-top: 20%;">
-                                <h5 style="color: #686868; font-weight: 400; font-size: 30px; padding-bottom:20px; border-top:2px solid #0370BF; width: 80%">Thank You for your business</h5>
-                            </div>
-                            <div class="g" style="color: #686868;">
-                                <p style="font-weight: 700;font-size: 14px;color: #0370BF; text-transform: uppercase;">Terms & conditions</p>
-                                <p>{{  $invoiceData->invoice_terms }}</p>
-                                <p>{{  $invoiceData->invoice_notes}}</p>
-                            </div>
+                    <div class="f">
+                        <div class="thanks" style="padding-top: 20%;">
+                            <h5
+                                style="color: #686868; font-weight: 400; font-size: 30px; padding-bottom:20px; border-top:2px solid #0370BF; width: 80%">
+                                Thank You for your business</h5>
                         </div>
+                        <div class="g" style="color: #686868;">
+                            <p style="font-weight: 700;font-size: 14px;color: #0370BF; text-transform: uppercase;">Terms
+                                & conditions</p>
+                            <p>{{  $invoiceData->invoice_terms }}</p>
+                            <p>{{  $invoiceData->invoice_notes}}</p>
+                        </div>
+                    </div>
                 </div>
 
         </div>
@@ -354,5 +362,3 @@
         </div>
 
         </div>
-
-

@@ -3,7 +3,7 @@
 
     .invoice-container {
         max-width: 794px;
-        height: 1123px;
+        height: 1120px;
         margin: auto;
         padding: 20px;
     }
@@ -99,6 +99,9 @@
 
 
 </style>
+
+
+
 <div class="invoice-container a4-container ">
    <div  class="section-wrap position-relative " >
         <div >
@@ -292,8 +295,6 @@
                         @if($data->invoice_signature=='signature_add')
                         <img src="{{ asset('uploads/signature/' . $userLogoAndTerms->signature) }}" alt=""
                             width="100px" height="auto" style="object-fit:contain;" />
-                            <img width="100px" height="auto" src="{{ asset('uploads/signature/' . $userLogoAndTerms->signature) }}" alt="">
-                            <p class="m-0"><strong>Signature</strong></p>
                         @endif
                     </div>
 
@@ -314,3 +315,4 @@
         </div>
     </div>
 </div>
+

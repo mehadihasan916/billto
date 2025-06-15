@@ -1,0 +1,155 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.first_section {
+    width: 100%;
+    display: flex;
+    margin-bottom: 75px;
+    justify-content: space-between;
+
+    /* position: relative; */
+    /* z-index: 2; */
+
+}
+
+
+.logo_area img {
+    width: 100px;
+    padding-bottom:5px;
+}
+
+.logo_area {
+    width: 30%;
+    float: left;
+    padding-top: 50px;
+    padding-bottom:100px;
+    /* text-align: left; */
+    text-align: start;
+}
+.logo_area  p{
+    color: #FFF;
+}
+
+.heading_area {
+    text-align: right;
+    padding-top: 50px;
+    padding-bottom: 100px;
+    padding-right: 50px;
+
+}
+
+.heading_area h1 {
+    color: #FCB21C;
+    font-weight: 700;
+    font-size: 59.9879px;
+    line-height: 73px;
+}
+
+.heading_area .a {
+    width: 50%;
+    float: left;
+    text-align: left;
+    margin-left: 30%;
+}
+
+.heading_area .b {
+    width: 50%;
+    float: right;
+}
+
+
+
+.i_sub_title {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+
+}
+
+.a {
+    text-align: left;
+}
+
+.a p {
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.b p {
+    font-weight: 400;
+    font-size: 15px;
+    padding-top: 2px;
+}
+
+
+
+.second_section {
+    padding-top: 20px;
+    padding-bottom: 80px;
+
+}
+
+.third_section {
+            width: 100%;
+            display: flex;
+
+        }
+
+        .left_Side_bar {
+            width: 30%;
+            background-color: #0370BF;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            float: left;
+        }
+
+
+
+        .c {
+            padding: 5px;
+            color: #FFF;
+            line-height: 24px;
+            font-size: 16px;
+            padding-bottom: 20px;
+        }
+
+
+        .d {
+            padding: 5px;
+            color: #FFF;
+            line-height: 24px;
+            font-size: 16px;
+            padding-bottom: 40px;
+        }
+
+
+        .f {
+            margin-left: 10%;
+        }
+
+        .empty_div {
+            width: 25%;
+            float: left;
+        }
+
+        .table_div {
+            width: 75%;
+            float: right;
+            text-align: right;
+            /* border-top: 2px solid #FCB21C; */
+            padding-right: 20px;
+        }
+                    .page{
+            background: var(--white);
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: var(--pageShadow);
+        }
+        .page[size="A4"] {
+            width: 21cm;
+            min-height: 29.7cm;
+            overflow: hidden;
+        }

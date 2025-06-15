@@ -35,7 +35,7 @@ class DashboardController extends Controller
         $paid_Amount_conut = Invoice::where('user_id', $user_id)->where('invoice_status', 'complete')->sum('receive_advance_amount');
         $latestDataInvoices = Invoice::where('user_id', Auth::user()->id)->whereIn('status_due_paid', ['paid', 'due'])->orderBy('id', 'DESC')->limit(8)->get();
 
-        //    user package details
+        // user package details
         $join_table_value = DB::table('users')
             ->join('payment_getways', 'users.id', '=', 'payment_getways.user_id')
             ->join('subscription_packages', 'payment_getways.subscription_package_id', '=', 'subscription_packages.id')
@@ -43,6 +43,7 @@ class DashboardController extends Controller
             ->selectRaw('payment_getways.*, subscription_packages.*,complate_invoice_counts.*')
             ->where('users.id',  Auth::user()->id)->get();
 
+        // dd($latestDataInvoices);
         return view('frontend.all-invoice')->with(compact('join_table_value', 'invoicessData', 'user', 'Total_Amount_conut', 'due_Amount_conut', 'paid_Amount_conut', 'latestDataInvoices'));
     }
 

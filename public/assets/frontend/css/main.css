@@ -1707,10 +1707,10 @@ p {
 }
 
 @media only screen and (max-width: 380px) {
-    .navbar-brand img {
+    /* .navbar-brand img {
         width: 80%;
         height: 33px;
-    }
+    } */
 }
 
 @media only screen and (max-width: 425px) {

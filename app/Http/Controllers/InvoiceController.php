@@ -540,6 +540,16 @@ class InvoiceController extends Controller
 
         $productsDatas = Invoice::find($id)->products->skip(0)->take(10);
         $due = $invoiceData->total;
+
+        $data  = Invoice::find($id);
+        $userLogoAndTerms = User::where('id', Auth::user()->id)->get([
+            'invoice_logo',
+            'terms',
+            'signature',
+
+        ])->first();
+
+
         Session::forget('last_invoice_id_download');
         if (Auth::user()->plan == 'free') {
 
@@ -561,7 +571,7 @@ class InvoiceController extends Controller
                 'default_font' => 'solaimanlipi',
             ]);
 
-            $mpdf->WriteHTML(view('invoices.free.all_invoice')->with(compact('invoiceData', 'productsDatas', 'userInvoiceLogo', 'due')));
+            $mpdf->WriteHTML(view('invoices.free.all_invoice')->with(compact('invoiceData', 'data', 'userLogoAndTerms', 'productsDatas', 'userInvoiceLogo', 'due')));
             $mpdf->Output('newdocument.pdf', 'I');
         } elseif (Auth::user()->plan == 'premium') {
             $pdf = Pdf::loadView('invoices.wid')->with(compact('invoiceData', 'productsDatas', 'userInvoiceLogo', 'due'));

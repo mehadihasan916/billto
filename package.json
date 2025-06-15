@@ -21,6 +21,6 @@
         "sass-loader": "^12.1.0"
     },
     "dependencies": {
-        "puppeteer": "^24.8.1"
+        "puppeteer": "^19.11.1"
     }
 }

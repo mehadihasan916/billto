@@ -2,17 +2,21 @@
 
 <header class="header_sevtion sticky-top p-0 m-0">
 
+
     <nav class="navbar   navbar-expand-lg navbar-light p-0 m-0 " style="background-color: #F0F0F0; z-index: 9999999;">
-
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('assets/frontend/img/LOGO/billto-logo.png') }}" alt="LOGO">
-            </a>
-            <div class="navbar">
-              @php
-                use App\Models\User;
-            @endphp
+                <a class="navbar-brand" href="{{ route('home') }}">
+                    <img src="{{ asset('assets/frontend/img/LOGO/billto-logo.png') }}" alt="LOGO" >
+                </a>
 
+            <span class="d-none d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block " style="font-size: normal;">A Product of <a target="_blank" href="https://luminadev.com/" class="text-decoration-none" style="color: #ffb317;">Lumina Dev</a>, by <a href="https://womenindigital.net/" class="text-decoration-none" style="color: #ffb317;">Women in Digital</a></span>
+
+            <div class="navbar d-block">
+                @php
+                    use App\Models\User;
+                @endphp
+
+                <span class="d-sm-block d-md-block d-lg-none d-xl-none d-xxl-none" style="font-size: small;">A Product of <a target="_blank" href="https://luminadev.com/" class="text-decoration-none" style="color: #ffb317;">Lumina Dev</a>, by <a href="https://womenindigital.net/" class="text-decoration-none" style="color: #ffb317;">Women in Digital</a></span>
                 <ul class="navbar-nav d-flex flex-row me-auto mb-2 mb-lg-0">
                     @auth
                         <li class="nav-item d-flex align-items-center">
