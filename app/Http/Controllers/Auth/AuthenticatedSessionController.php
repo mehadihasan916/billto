@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
-  public function __construct(){
-    session_start();
-  }
+    public function __construct()
+    {
+        session_start();
+    }
 
     /**
      * Display the login view.
@@ -37,25 +38,36 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $sessionId = session_id();
+        $sessionId = session()->getId();
 
 
-        if (Auth::user()->is_admin === 1) {
-              Invoice::where('session_id',$sessionId)->update([
-                'user_id'=>Auth::user()->id,
-            ]);
-            return redirect()->intended(RouteServiceProvider::ADMIN);
-        } elseif (Auth::user()->is_admin === 0) {
-            Invoice::where('session_id',$sessionId)->update([
-                'user_id'=>Auth::user()->id,
-            ]);
-            return redirect()->intended(RouteServiceProvider::HOME);
 
+        // if (Auth::user()->is_admin === 1) {
+        //     Invoice::where('session_id', $sessionId)->update([
+        //         'user_id' => Auth::user()->id,
+        //     ]);
+        //     return redirect()->intended(RouteServiceProvider::ADMIN);
+        // } elseif (Auth::user()->is_admin === 0) {
+        //     Invoice::where('session_id', $sessionId)->update([
+        //         'user_id' => Auth::user()->id,
+        //     ]);
+        //     return redirect()->intended(RouteServiceProvider::HOME);
+        // } else {
+        //     return "ok";
+        // }
+
+        $user = Auth::user();
+        Invoice::where('session_id', $sessionId)->update([
+            'user_id' => $user->id,
+        ]);
+
+        if ((int) $user->is_admin === 1) {
+            return redirect(RouteServiceProvider::ADMIN);
+        } elseif ((int) $user->is_admin === 0) {
+            return redirect(RouteServiceProvider::HOME);
         } else {
             return "ok";
         }
-
-
     }
 
     /**
