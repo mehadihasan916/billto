@@ -221,7 +221,7 @@ left_manu
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-success" href="{{ route('invoice.show') }}">Show</a>
+                {{-- <a class="btn btn-success" href="{{ route('invoice.show') }}">Show</a> --}}
 
             </div>
 

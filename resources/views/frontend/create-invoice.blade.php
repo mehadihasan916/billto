@@ -697,6 +697,7 @@
                                 </div>
                             </div>
                             <input type="hidden" id="balanceDue_amounts" name="balanceDue_amounts">
+                            <input type="hidden" name="template_name" id="template_name" value="">
                         </div>
                     </div>
                 </div>
@@ -792,13 +793,15 @@
                                                 {{ $packege->packageName ?? '' }}
                                             @endif
                                         </span>
-                                        <input type="radio" name="template_name" value="{{ $template->id }}"
+                                        <input type="radio" name="template_id"  data-template-name="{{ $template->templateName }}" value="{{ $template->id }}"
                                             @if ($template_id_check->id == $template->id) checked @else @endif />
                                         <span class="radio-btn"> <i class="bi bi-check-lg"></i>
                                             <div class="hobbies-icon tempResponsive">
                                                 <img src=" {{ asset('uploads/template/' . $template->templateImage) }}" alt="">
                                             </div>
                                         </span>
+
+
                                     </div>
                                 </label>
                             @endforeach
@@ -958,4 +961,22 @@
         });
     </script>
     {{-- load more data template  --}}
+
+    <script>
+        // Set template_name on page load if a template is already selected
+        $(document).ready(function() {
+            var checked = $("input[name='template_id']:checked");
+            if (checked.length) {
+                $('#template_name').val(checked.data('template-name'));
+            }
+        });
+
+        // Update template_name when a template is selected
+        $(document).on('change', "input[name='template_id']", function() {
+            var templateName = $(this).data('template-name');
+            $('#template_name').val(templateName);
+            console.log(templateName);
+        });
+    </script>
 @endpush
+

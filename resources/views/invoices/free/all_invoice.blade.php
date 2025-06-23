@@ -1,12 +1,12 @@
-{{--
- @if("1"==$invoiceData->template_name)
+
+ {{-- @if("1"==$invoiceData->template_name)
     @include('invoices.free.invoice_two') --}}
     {{-- @include('frontend.invoices.invoice_two') --}}
 
- {{-- @elseif ("2"==$invoiceData->template_name) --}}
-    {{-- @include('invoices.free.invoice_wid') --}}
-    {{-- @include('invoices.preview_invoice.invoice_pre_wid')
- @elseif ("3"==$invoiceData->template_name)
+ {{-- @elseif ("2"==$invoiceData->template_name)
+    @include('invoices.free.invoice_wid') --}}
+    {{-- @include('invoices.preview_invoice.invoice_pre_wid') --}}
+ {{-- @elseif ("3"==$invoiceData->template_name)
     @include('invoices.free.invoice_three')
  @elseif ("4"==$invoiceData->template_name)
     @include('invoices.free.invoice_four')
@@ -20,7 +20,11 @@
 
 
 @if("1"==$invoiceData->template_name)
-    @include('invoices.free.invoice_two')
+    @include('invoices.free.invoice_one')
 @elseif ("2"==$invoiceData->template_name)
-    @include('frontend.invoices.invoice_two')
- @endif
+    @include('invoices.free.invoice_two')
+@elseif ("3"==$invoiceData->template_name)
+    @include('invoices.free.invoice_wid')
+@endif
+
+{{-- 3,4,5,6 thik download version thik nai  --}}

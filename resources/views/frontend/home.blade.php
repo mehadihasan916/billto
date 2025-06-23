@@ -61,7 +61,7 @@
                 <p class="h2_title2">{{__('messages.Choose_Your_Invoice_Template')}}</p>
                 <p class="invoice_p">{{__('messages.Start_creating_your_professional_bill')}}</p>
             </div>
-             <div class="row invoice_template_margin" id="invoice_template_margin1">
+             <div class="row invoice_template_margin justify-content-center" id="invoice_template_margin1">
 
             </div>
         </div>

@@ -368,7 +368,7 @@ class InvoiceController extends Controller
         ]);
 
         $user_id = Auth::id();
-        $template_id_check = $request->template_name;
+        $template_id_check = $request->template_id;
 
         // Check package limit
         $packages = DB::table('users')
@@ -379,8 +379,14 @@ class InvoiceController extends Controller
             ->where('users.id', $user_id)
             ->get();
 
-        $isAllowedTemplate = $packages->contains(fn($p) => $p->template === $template_id_check);
+
+        // $isAllowedTemplate = $packages->contains(fn($p) => $p->template == $template_id_check);
+        // Allow free access for template_id 1, else check package permission
+        $isAllowedTemplate = $template_id_check == 1 || $packages->contains(fn($p) => (int) $p->template === (int) $template_id_check);
+
         $activePackage = $packages->first();
+
+
 
         if (!$isAllowedTemplate || !$activePackage) {
             return response()->json(['message' => 'Template access denied.']);
