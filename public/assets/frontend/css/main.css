@@ -1687,14 +1687,14 @@ p {
 }
 
 .navbar-brand img {
-    width: 100%;
-    height: 50px;
+    width: 124px;
+    /* height: 50px; */
 }
 
 @media only screen and (max-width: 769px) {
     .navbar-brand img {
-        width: 100%;
-        height: 40px;
+        width: 124px;
+        /* height: 40px; */
     }
 }
 

@@ -262,7 +262,13 @@ function allData() {
             var data = '';
             var totalamount = 0;
             $.each(responce, function (key, value) {
-                totalamount = totalamount + value.product_amount
+                // totalamount = totalamount + value.product_amount
+                let amount = parseFloat((value.product_amount + '').replace(/,/g, '')) || 0;
+                totalamount += amount;
+
+                // console.log('main calpit:' + totalamount);
+
+
                 data = data + "<tr id='tableRow-" + value.id + "'>"
                 data = data + "<th class='d-none'  onClick='editData(" + value.id + ")' scope='row' id='key-" + value.id + "'>" + ++key + "</th>"
                 data = data + "<td style='border-bottom: 1px solid #d9d8d8;padding: 8px 10px;color: #686868; font-weight: 500;' onClick='editData(" + value.id + ")' id='product_name-" + value.id + "'>" + value.product_name + "</td>"
@@ -346,15 +352,21 @@ function pclear() {
 }
 
 // Sub total
-function total(itemAmount) {
-    $('#subtotal').text(itemAmount);
-}
+// function total(itemAmount) {
+//     $('#subtotal').text(itemAmount);
+// }
 
 // Tax
 function total(itemAmount) {
     $('#subtotal').text(itemAmount);
-    var itemAmount = $('#subtotal').text() * 1;
+    // var itemAmount = $('#subtotal').text() * 1;
+    var itemAmountText = $('#subtotal').text().replace(/[^0-9.]/g, '');
+    var itemAmount = parseFloat(itemAmountText);
+
+
+
     $('#subtotal_no_vat').val(itemAmount);
+    console.log('subtotal_no_vat', itemAmount);
 
     var tax = $('#invoice_tax').val() * 1;
     var persent = (itemAmount * tax) / 100

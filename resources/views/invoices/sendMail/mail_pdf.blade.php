@@ -1,5 +1,5 @@
 
- @if("1"==$invoiceData->template_name)
+ {{-- @if("1"==$invoiceData->template_name)
  @include('invoices.free.invoice_two')
  @elseif ("2"==$invoiceData->template_name)
  @include('invoices.free.invoice_one')
@@ -11,4 +11,12 @@
  @include('invoices.free.invoice_five')
  @elseif ("6"==$invoiceData->template_name)
  @include('invoices.free.invoice_six')
- @endif
+ @endif --}}
+
+@if("1"==$invoiceData->template_name)
+    @include('invoices.free.invoice_one')
+@elseif ("2"==$invoiceData->template_name)
+    @include('invoices.free.invoice_two')
+@elseif ("3"==$invoiceData->template_name)
+    @include('invoices.free.invoice_wid')
+@endif
