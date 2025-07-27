@@ -14,6 +14,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Frontend\PagesController;
 use App\Http\Controllers\Frontend\SubscriptionPackContoller;
+use App\Http\Controllers\GeminiController;
 use App\Http\Controllers\Payment\StripeController;
 use App\Models\SendMail_info;
 use Illuminate\Http\Request;
@@ -121,3 +122,10 @@ Route::get('/notice/div/hidden', function () {
     Session::put('hidden_session', 'd-none');
     return redirect()->back();
 });
+
+// geimini api
+// Route::get('/generate-text', [GeminiController::class, 'generateText'])->name('generate.text');
+
+Route::get('/chat', function () {
+    return view('gemini_result');
+})->name('gemini.chat');

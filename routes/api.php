@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GeminiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::post('/generate-text', [GeminiController::class, 'generateText'])->name('api.generate.text');
 
 
 
