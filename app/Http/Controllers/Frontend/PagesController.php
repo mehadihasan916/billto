@@ -39,9 +39,9 @@ class PagesController extends Controller
         }
         // Only for google, facebook & Github check request END
 
-        $subcription_package_free = SubscriptionPackage::Where('packageName', 'FREE')->orWhere('packageName', 'Free')->get();
-        $subcription_package_stand = SubscriptionPackage::Where('packageName', 'Standard')->orWhere('packageName', 'STANDARD')->get();
-        $subcription_package_premium = SubscriptionPackage::Where('packageName', 'Premium')->orWhere('packageName', 'PREMIUM')->get();
+        $subcription_package_free = SubscriptionPackage::where('price', '0')->get();
+        $subcription_package_stand = SubscriptionPackage::where('price', '>', '0')->where('price', '<', '50')->get();
+        $subcription_package_premium = SubscriptionPackage::where('price', '>=', '50')->get();
 
 
 

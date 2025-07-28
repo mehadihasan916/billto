@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Auth;
 
 class SubscriptionPackContoller extends Controller
 {
+    public function showAllPackages()
+    {
+        $packages = SubscriptionPackage::all();
+
+        return view('frontend.packages.index', compact('packages'));
+    }
+
     public function payment_gateway($id)
     {
         if (!Auth::check()) {
@@ -47,10 +54,36 @@ class SubscriptionPackContoller extends Controller
 
         $subscriptn_package =  SubscriptionPackage::where('id', $request->package_id)->first();
 
+        // Check if package exists
+        if (!$subscriptn_package) {
+            return redirect()->back()->with('delete', 'Package not found. Please try again.');
+        }
 
+        // Handle free plan (price = 0)
+        if ($subscriptn_package->price == '0' && $request->package_price == '0') {
+            // For free plan, directly assign without payment processing
+            PaymentGetway::updateOrCreate(
+                ['user_id' => auth()->user()->id],
+                [
+                    'amount' => $request->package_price,
+                    'subscription_package_id' => $request->package_id,
+                    'created_at' => Carbon::now(),
+                ]
+            );
+
+            ComplateInvoiceCount::updateOrCreate(
+                ['user_id' => auth()->user()->id],
+                [
+                    'current_invoice_total' => '0',
+                    'created_at' => Carbon::now()
+                ]
+            );
+
+            return redirect()->back()->with('success', 'Free plan activated successfully! You can now create up to ' . $subscriptn_package->limitInvoiceGenerate . ' invoices per month.');
+        }
+
+        // Handle paid plans
         if ($subscriptn_package->price === $request->package_price) {
-
-
 
             PaymentGetway::where('user_id', auth()->user()->id)->update([
                 'amount' => $request->package_price,

@@ -43,6 +43,9 @@ Route::post('/create/bill', [PagesController::class, 'createbill'])->name('creat
 //payment payment gateway
 Route::get('/payment-gateway/{package_id}', [SubscriptionPackContoller::class, 'payment_gateway']);
 
+// Display all packages
+Route::get('/packages', [SubscriptionPackContoller::class, 'showAllPackages'])->name('packages.show');
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/dashboard.php';

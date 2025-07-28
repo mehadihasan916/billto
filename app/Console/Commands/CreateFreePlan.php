@@ -1,21 +1,43 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Console\Commands;
 
-use Illuminate\Database\Seeder;
+use Illuminate\Console\Command;
 use App\Models\SubscriptionPackage;
 use App\Models\Pricing;
 use App\Models\SubscriptionPackageTemplate;
 
-class SubscriptionPackageSeeder extends Seeder
+class CreateFreePlan extends Command
 {
     /**
-     * Run the database seeds.
+     * The name and signature of the console command.
      *
-     * @return void
+     * @var string
      */
-    public function run()
+    protected $signature = 'package:create-free-plan';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create the Free Plan subscription package';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
+        // Check if Free Plan already exists
+        $existingFreePlan = SubscriptionPackage::where('packageName', 'Free Plan')->first();
+
+        if ($existingFreePlan) {
+            $this->error('Free Plan already exists!');
+            return 1;
+        }
+
         // Create Free Plan
         $freePlan = SubscriptionPackage::create([
             'packageName' => 'Free Plan',
@@ -81,6 +103,12 @@ class SubscriptionPackageSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('Free Plan created successfully!');
+        $this->info('✅ Free Plan created successfully!');
+        $this->info('Package ID: ' . $freePlan->id);
+        $this->info('Price: £0/month');
+        $this->info('Invoice Limit: 5 per month');
+        $this->info('Templates: 3 basic templates');
+
+        return 0;
     }
 }

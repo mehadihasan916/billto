@@ -89,8 +89,12 @@
                         <div class="card text-center ">
                             <div class="card-body shadowcard p-0">
                                 <h3 class="heding"> {{ $sub_package_free->packageNamebn }}</h3>
-                                <h1 class="priceColor"> &#2547;{{ $sub_package_free->pricebn }}<span
-                                        class="month">/মাস</span>
+                                <h1 class="priceColor">
+                                    @if($sub_package_free->price == '0')
+                                        £{{ $sub_package_free->pricebn }}<span class="month">/মাস</span>
+                                    @else
+                                        &#2547;{{ $sub_package_free->pricebn }}<span class="month">/মাস</span>
+                                    @endif
                                 </h1>
                                 {{-- <p class="text_muted">
             galley of type and scrambled it to make a type specimen book.
@@ -145,10 +149,20 @@
                                     @endforeach
 
                                 </div>
-                                <div class="pricing_btn_design">
-                                    <a href="{{ url('payment-gateway', $sub_package_free->id) }}"><button
-                                            class="btnCss">সাবমিট</button></a>
-                                </div>
+                                @if($sub_package_free->price == '0')
+                                    {{-- Free Plan - Direct activation --}}
+                                    <form action="{{ url('payment/store') }}" method="POST" class="pricing_btn_design">
+                                        @csrf
+                                        <input type="hidden" name="package_id" value="{{ $sub_package_free->id }}">
+                                        <input type="hidden" name="package_price" value="{{ $sub_package_free->price }}">
+                                        <button type="submit" class="btnCss">ফ্রি প্ল্যান সক্রিয় করুন</button>
+                                    </form>
+                                @else
+                                    <div class="pricing_btn_design">
+                                        <a href="{{ url('payment-gateway', $sub_package_free->id) }}"><button
+                                                class="btnCss">সাবমিট</button></a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -161,7 +175,12 @@
                         <div class="card text-center ">
                             <div class="card-body shadowcard p-0">
                                 <h3 class="heding"> {{ $sub_package_free->packageName }}</h3>
-                                <h1 class="priceColor">${{ $sub_package_free->price }}<span class="month">/month</span>
+                                <h1 class="priceColor">
+                                    @if($sub_package_free->price == '0')
+                                        £{{ $sub_package_free->price }}<span class="month">/month</span>
+                                    @else
+                                        ${{ $sub_package_free->price }}<span class="month">/month</span>
+                                    @endif
                                 </h1>
 
                                 <div class="emty_margin"></div>
@@ -215,27 +234,34 @@
                                     @endforeach
 
                                 </div>
-                                {{-- <div class="pricing_btn_design">
-                                    <a href="{{ url('payment-gateway', $sub_package_free->id) }}"><button
-                                            class="btnCss">Submit</button></a>
-                                </div> --}}
-
-                                {{-- stripe form  --}}
-                                <form id="payment-form" class="needs-validation px-2 mb-2" novalidate>
-                                    @csrf
-                                    <div class="mb-3">
-                                        {{-- <label for="card-element" class="form-label">Credit/Debit Card</label> --}}
-                                        <div id="card-element" class="form-control p-2" style="height: 40px;">
-                                            <!-- Stripe injects card fields here -->
+                                @if($sub_package_free->price == '0')
+                                    {{-- Free Plan - Direct activation --}}
+                                    <form action="{{ url('payment/store') }}" method="POST" class="px-2 mb-2">
+                                        @csrf
+                                        <input type="hidden" name="package_id" value="{{ $sub_package_free->id }}">
+                                        <input type="hidden" name="package_price" value="{{ $sub_package_free->price }}">
+                                        <button type="submit" class="btn btn-success w-100 py-2">
+                                            <span>Activate Free Plan</span>
+                                        </button>
+                                    </form>
+                                @else
+                                    {{-- Paid Plan - Stripe payment form --}}
+                                    <form id="payment-form" class="needs-validation px-2 mb-2" novalidate>
+                                        @csrf
+                                        <div class="mb-3">
+                                            {{-- <label for="card-element" class="form-label">Credit/Debit Card</label> --}}
+                                            <div id="card-element" class="form-control p-2" style="height: 40px;">
+                                                <!-- Stripe injects card fields here -->
+                                            </div>
+                                            <div id="card-errors" class="invalid-feedback" role="alert"></div>
                                         </div>
-                                        <div id="card-errors" class="invalid-feedback" role="alert"></div>
-                                    </div>
 
-                                    <button id="submit-button" class="btn btn-dark w-100 py-2">
-                                        <span id="button-text">Pay Now</span>
-                                        <span id="button-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
-                                    </button>
-                                </form>
+                                        <button id="submit-button" class="btn btn-dark w-100 py-2">
+                                            <span id="button-text">Pay Now</span>
+                                            <span id="button-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     @endforeach

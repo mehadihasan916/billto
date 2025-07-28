@@ -86,7 +86,13 @@ class InvoiceController extends Controller
                     $packages = SubscriptionPackage::all();
                 } else {
                     $find_subscription = PaymentGetway::where('user_id', auth()->user()->id)->first();
-                    $packages = SubscriptionPackage::where('id', 1)->orWhere('id', $find_subscription->subscription_package_id)->get();
+                    if ($find_subscription) {
+                        // User has a subscription, show their current plan
+                        $packages = SubscriptionPackage::where('id', $find_subscription->subscription_package_id)->get();
+                    } else {
+                        // User has no subscription, show Free Plan
+                        $packages = SubscriptionPackage::where('price', '0')->get();
+                    }
                 }
             }
 
@@ -370,6 +376,32 @@ class InvoiceController extends Controller
         $user_id = Auth::id();
         $template_id_check = $request->template_id;
 
+        // Check if user has a package, if not assign Free Plan
+        $userPackage = PaymentGetway::where('user_id', $user_id)->first();
+
+        if (!$userPackage) {
+            // User has no package, assign Free Plan
+            $freePlan = SubscriptionPackage::where('price', '0')->first();
+            if ($freePlan) {
+                PaymentGetway::create([
+                    'user_id' => $user_id,
+                    'amount' => '0',
+                    'subscription_package_id' => $freePlan->id,
+                    'created_at' => Carbon::now(),
+                ]);
+
+                ComplateInvoiceCount::create([
+                    'user_id' => $user_id,
+                    'invoice_count_total' => 0,
+                    'current_invoice_total' => 0,
+                    'count_invoice_id' => $request->id,
+                    'created_at' => Carbon::now()
+                ]);
+
+                $userPackage = PaymentGetway::where('user_id', $user_id)->first();
+            }
+        }
+
         // Check package limit
         $packages = DB::table('users')
             ->join('payment_getways', 'users.id', '=', 'payment_getways.user_id')
@@ -379,104 +411,120 @@ class InvoiceController extends Controller
             ->where('users.id', $user_id)
             ->get();
 
-
-        // $isAllowedTemplate = $packages->contains(fn($p) => $p->template == $template_id_check);
-        // Allow free access for template_id 1, else check package permission
         $isAllowedTemplate = $template_id_check == 1 || $packages->contains(fn($p) => (int) $p->template === (int) $template_id_check);
-
         $activePackage = $packages->first();
 
-
+        // If no active package found, try to get Free Plan
+        if (!$activePackage) {
+            $freePlan = SubscriptionPackage::where('price', '0')->first();
+            if ($freePlan) {
+                $activePackage = $freePlan;
+                $isAllowedTemplate = true; // Allow basic templates for free plan
+            }
+        }
 
         if (!$isAllowedTemplate || !$activePackage) {
             return response()->json(['message' => 'Template access denied.']);
         }
 
+        // --- Monthly Invoice Limit Logic ---
+        $now = Carbon::now();
+        $currentMonth = $now->format('Y-m');
         $check = ComplateInvoiceCount::firstOrCreate(
             ['user_id' => $user_id],
-            ['count_invoice_id' => $request->id]
+            [
+                'count_invoice_id' => $request->id,
+                'invoice_count_total' => 0,
+                'current_invoice_total' => 0,
+                'created_at' => $now
+            ]
         );
 
-        if ($check->count_invoice_id !== $request->id) {
-            $check->update(['count_invoice_id' => $request->id]);
+        // If month has changed since last update, reset current_invoice_total
+        $lastUpdatedMonth = $check->updated_at ? Carbon::parse($check->updated_at)->format('Y-m') : $currentMonth;
+        if ($lastUpdatedMonth !== $currentMonth) {
+            $check->current_invoice_total = 0;
+            $check->save();
         }
 
-        $createdAt = Carbon::parse($activePackage->payment_created_at);
-        $usedDays = $createdAt->diffInDays(Carbon::now());
-
-        if (
-            $activePackage->limitInvoiceGenerate >= ($check->current_invoice_total + 1) &&
-            $activePackage->packageDuration >= $usedDays
-        ) {
-            if ($check->count_invoice_id !== $request->id) {
-                $check->increment('invoice_count_total');
-                $check->increment('current_invoice_total');
-            }
-
-            $id = $request->id;
-            $invoice_logo = $request->file('invoice_logo');
-            $filename = null;
-
-            // Handle logo upload
-            if ($invoice_logo) {
-                $filename = time() . '.' . $invoice_logo->getClientOriginalExtension();
-                $invoice_logo->move(public_path('storage/invoice/logo'), $filename);
-
-                $user = User::findOrFail($user_id);
-                if ($user->invoice_logo) {
-                    $old_path = public_path('storage/invoice/logo/') . $user->invoice_logo;
-                    if (File::exists($old_path)) File::delete($old_path);
-                }
-
-                $user->update(['invoice_logo' => $filename]);
-            }
-
-            // Save invoice terms if present
-            if ($request->invoice_terms) {
-                User::where('id', $user_id)->update(['terms' => $request->invoice_terms]);
-            }
-
-            $products = Invoice::find($id)?->products->pluck('product_amount')->sum() ?? 0;
-            $tax = ($request->invoice_tax * $products) / 100;
-            $total = $products + $tax;
-            $status = $request->receive_advance_amount == $request->final_total ? 'paid' : 'due';
-
-            // Save invoice
-            $invoice = Invoice::updateOrCreate(
-                ['id' => $id],
-                [
-                    'invoice_logo' => 0,
-                    'currency' => $request->currency,
-                    'invoice_form' => $request->invoice_form,
-                    'invoice_to' => $request->invoice_to,
-                    'invoice_id' => $request->invoice_id,
-                    'invoice_date' => $request->invoice_date,
-                    'invoice_payment_term' => $request->invoice_payment_term,
-                    'invoice_dou_date' => $request->invoice_dou_date,
-                    'invoice_po_number' => $request->invoice_po_number,
-                    'invoice_notes' => $request->invoice_notes,
-                    'invoice_terms' => 0,
-                    'invoice_tax_percent' => $request->invoice_tax,
-                    'invoice_tax_amounts' => round($request->invoice_tax_amounts, 2),
-                    'requesting_advance_amount_percent' => round($request->requesting_advance_amount, 2),
-                    'total' => round($total, 2),
-                    'final_total' => round($request->final_total, 2),
-                    'receive_advance_amount' => round($request->receive_advance_amount, 2),
-                    'balanceDue_amounts' => round($request->balanceDue_amounts, 2),
-                    'discount_amounts' => round($request->discount_amounts, 2),
-                    'discount_percent' => $request->discount_percent,
-                    'invoice_status' => 'complete',
-                    'status_due_paid' => $status,
-                    'subtotal_no_vat' => round($request->subtotal_no_vat, 2),
-                    'template_name' => $request->template_name,
-                    'invoice_signature' => $request->invoice_signature,
-                ]
-            );
-
-            return response()->json([$invoice->id]);
+        // Enforce Free Plan limit (5 per month)
+        $limit = ($activePackage->price == 0) ? 5 : ($activePackage->limitInvoiceGenerate ?? 999999);
+        if ($check->current_invoice_total >= $limit) {
+            return response()->json(['message' => 'Your package limit is over! Please update your package.']);
         }
 
-        return response()->json(['message' => 'Fill up invoice form properly or package limit reached.']);
+        // --- End Monthly Invoice Limit Logic ---
+
+        // ... rest of your invoice creation logic ...
+
+        $id = $request->id;
+        $invoice_logo = $request->file('invoice_logo');
+        $filename = null;
+
+        // Handle logo upload
+        if ($invoice_logo) {
+            $filename = time() . '.' . $invoice_logo->getClientOriginalExtension();
+            $invoice_logo->move(public_path('storage/invoice/logo'), $filename);
+
+            $user = User::findOrFail($user_id);
+            if ($user->invoice_logo) {
+                $old_path = public_path('storage/invoice/logo/') . $user->invoice_logo;
+                if (File::exists($old_path)) File::delete($old_path);
+            }
+
+            $user->update(['invoice_logo' => $filename]);
+        }
+
+        // Save invoice terms if present
+        if ($request->invoice_terms) {
+            User::where('id', $user_id)->update(['terms' => $request->invoice_terms]);
+        }
+
+        $products = Invoice::find($id)?->products->pluck('product_amount')->sum() ?? 0;
+        $tax = ($request->invoice_tax * $products) / 100;
+        $total = $products + $tax;
+        $status = $request->receive_advance_amount == $request->final_total ? 'paid' : 'due';
+
+        // Save invoice
+        $invoice = Invoice::updateOrCreate(
+            ['id' => $id],
+            [
+                'invoice_logo' => 0,
+                'currency' => $request->currency,
+                'invoice_form' => $request->invoice_form,
+                'invoice_to' => $request->invoice_to,
+                'invoice_id' => $request->invoice_id,
+                'invoice_date' => $request->invoice_date,
+                'invoice_payment_term' => $request->invoice_payment_term,
+                'invoice_dou_date' => $request->invoice_dou_date,
+                'invoice_po_number' => $request->invoice_po_number,
+                'invoice_notes' => $request->invoice_notes,
+                'invoice_terms' => 0,
+                'invoice_tax_percent' => $request->invoice_tax,
+                'invoice_tax_amounts' => round($request->invoice_tax_amounts, 2),
+                'requesting_advance_amount_percent' => round($request->requesting_advance_amount, 2),
+                'total' => round($total, 2),
+                'final_total' => round($request->final_total, 2),
+                'receive_advance_amount' => round($request->receive_advance_amount, 2),
+                'balanceDue_amounts' => round($request->balanceDue_amounts, 2),
+                'discount_amounts' => round($request->discount_amounts, 2),
+                'discount_percent' => $request->discount_percent,
+                'invoice_status' => 'complete',
+                'status_due_paid' => $status,
+                'subtotal_no_vat' => round($request->subtotal_no_vat, 2),
+                'template_name' => $request->template_name,
+                'invoice_signature' => $request->invoice_signature,
+            ]
+        );
+
+        // Increment invoice counts after successful creation
+        $check->increment('invoice_count_total');
+        $check->increment('current_invoice_total');
+
+        return response()->json([$invoice->id]);
+
+        // If we reach here, something went wrong
+        // return response()->json(['message' => 'Fill up invoice form properly or package limit reached.']);
     }
 
 
