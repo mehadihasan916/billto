@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('type');
-            $table->string('stripe_id')->unique();
-            $table->string('stripe_status');
-            $table->string('stripe_price')->nullable();
-            $table->integer('quantity')->nullable();
-            $table->timestamp('trial_ends_at')->nullable();
+            $table->foreignId('payment_record_id')->nullable();
+            $table->string('name');
+            $table->string('price');
+            $table->string('invoice_template')->nullable();
+            $table->string('invoice_generate')->nullable();
+            $table->string('duration')->nullable();
+            $table->string('status')->default(1)->comment('0=inactive, 1=active');
+            $table->timestamp('starts_at')->nullable();
             $table->timestamp('ends_at')->nullable();
             $table->timestamps();
-
-            $table->index(['user_id', 'stripe_status']);
         });
     }
 

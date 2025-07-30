@@ -20,16 +20,16 @@ class UserSeeder extends Seeder
             'email' => 'admin@mail.com',
             'is_admin' => true,
             'email_verified_at' => now(),
-            'password' => Hash::make('admin2022'),
+            'password' => Hash::make('admin2025'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('users')->insert([
-            'name' => 'demo',
+            'name' => 'Demo User',
             'email' => 'demo@mail.com',
             'is_admin' => false,
             'email_verified_at' => now(),
-            'password' => Hash::make('demo2022'),
+            'password' => Hash::make('demo2025'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -39,6 +39,16 @@ class UserSeeder extends Seeder
             'is_admin' => false,
             'email_verified_at' => now(),
             'password' => Hash::make('womenindigital'),
+            'plan' => 'premium',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Women in Digital',
+            'email' => 'womenindigitalbd@gmail.com',
+            'is_admin' => true,
+            'email_verified_at' => now(),
+            'password' => Hash::make('11111111'),
             'plan' => 'premium',
             'created_at' => now(),
             'updated_at' => now(),

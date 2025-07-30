@@ -10,6 +10,7 @@ use App\Models\PaymentGetway;
 use App\Models\SubscriptionPackage;
 use App\Models\ComplateInvoiceCount;
 use App\Models\PaymentRecord;
+use App\Models\Subscription;
 use Carbon\Carbon;
 
 class StripeController extends Controller
@@ -87,6 +88,21 @@ class StripeController extends Controller
                 'package_price' => $request->package_price,
                 'package_name' => $request->package_name,
             ]);
+
+            // Create a new subscription record
+            Subscription::create([
+                'user_id' => auth()->id(),
+                'payment_record_id' => $records->id,
+                'name' => $subscription_package->packageName,
+                'price' => $subscription_package->price,
+                'invoice_template' => $subscription_package->templateQuantity,
+                'invoice_generate' => $subscription_package->limitInvoiceGenerate,
+                'duration' => $subscription_package->packageDuration,
+                'status' => 1, // Active
+                'starts_at' => Carbon::now(),
+                'ends_at' => Carbon::now()->addDays($subscription_package->packageDuration),
+            ]);
+
             session([
                 'package_name' => $request->package_name,
                 'package_price' => $request->package_price,

@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+
 
         $get_id = $user->id;
 
@@ -71,7 +71,7 @@ class RegisteredUserController extends Controller
             'current_invoice_total' => '0',
             'created_at' => Carbon::now()
         ]);
-
+        event(new Registered($user));
         Auth::login($user);
         return redirect(RouteServiceProvider::HOME);
     }

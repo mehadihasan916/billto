@@ -16,6 +16,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Models\ComplateInvoiceCount;
 use App\Models\PaymentGetway;
+use App\Models\Subscription;
 use App\Models\SubscriptionPackage;
 use App\Models\SubscriptionPackageTemplate;
 use Illuminate\Support\Facades\Auth;
@@ -197,166 +198,6 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-
-    //     $validated = $request->validate([
-    //         'currency' => 'required|max:30',
-    //         'invoice_form' => 'required|max:90',
-    //         'invoice_to' => 'required|max:90',
-    //         'invoice_id' => 'required',
-    //         'invoice_date' => 'required|date',
-    //         'invoice_payment_term' => 'max:30',
-    //         'invoice_po_number' => 'max:30',
-    //         'invoice_notes' => 'max:100',
-    //         'invoice_terms' => 'max:100',
-    //         'invoice_logo' => 'max:1024',
-    //     ]);
-
-
-    //     $user_id = Auth::user()->id;
-
-    //     $template_id_check = $request->template_name;
-
-    //     // Chack package limit
-    //     $join_table_value = DB::table('users')
-    //         ->join('payment_getways', 'users.id', '=', 'payment_getways.user_id')
-    //         ->join('subscription_packages', 'payment_getways.subscription_package_id', '=', 'subscription_packages.id')
-    //         ->join('subscription_package_templates', 'payment_getways.subscription_package_id', '=', 'subscription_package_templates.subscriptionPackageId')
-    //         ->selectRaw('users.*, payment_getways.*, subscription_packages.*,subscription_package_templates.*, payment_getways.created_at as payment_created_at')
-    //         ->where('users.id',  $user_id)->get();
-    //     $data = "";
-
-
-    //     foreach ($join_table_value as $join_table) {
-    //         $truvalue = $join_table->template === $template_id_check;
-    //         if ($truvalue == true) {
-    //             $data = 1;
-    //         }
-    //     }
-
-    //     $check = ComplateInvoiceCount::where('user_id', $user_id)->first();
-    //     $invoice_last_id = $check->count_invoice_id;
-
-
-
-    //     ComplateInvoiceCount::where('user_id', $user_id)->update([
-    //         'count_invoice_id' => $request->id
-    //     ]);
-
-    //     $packageDuration = $join_table->packageDuration;
-    //     $create_date = $join_table->payment_created_at;
-    //     return response()->json([
-    //         'data' => $packageDuration,
-    //     ]);
-
-    //     $date = new Carbon($create_date);
-    //     $today_date = $date->diffInDays(Carbon::now());
-
-
-
-
-
-    //     if ($join_table->limitInvoiceGenerate >= $check->current_invoice_total + 1 && $packageDuration >= $today_date && $data == 1) {
-
-    //         if ($invoice_last_id != $request->id) {
-    //             ComplateInvoiceCount::where('user_id', $user_id)->where('count_invoice_id', $request->id)->increment('invoice_count_total');
-    //             ComplateInvoiceCount::where('user_id', $user_id)->where('count_invoice_id', $request->id)->increment('current_invoice_total');
-    //         }
-
-    //         if ($request->id != null) {
-    //             // Tax Calculation Formula Start
-    //             $taxPercentage = $request->invoice_tax;
-    //             $products = Invoice::find($request->id)->products->pluck('product_amount')->sum();
-    //             $tax = ($taxPercentage * $products) / 100;
-    //             $total = $tax + $products;
-    //             // invocie Logo name Strat
-    //             $id = $request->id;
-    //             $filename = null;
-    //             $invoice_logo = $request->invoice_logo;
-
-    //             if ($id == null && $invoice_logo != null) {
-    //                 if ($request->file('invoice_logo')) {
-    //                     $file = $request->file('invoice_logo');
-    //                     $extension = $file->getClientOriginalExtension();
-    //                     $filename = time() . '.' . $extension;
-    //                     $file->move(public_path('storage/invoice/logo'), $filename);
-    //                     User::where('id', Auth::user()->id)
-    //                         ->update([
-    //                             'invoice_logo' => $filename,
-    //                         ]);
-    //                 }
-    //             } elseif ($id != null && $invoice_logo != null) {
-
-    //                 $find = User::findOrFail(Auth::user()->id);
-    //                 $image_path         = public_path("storage/invoice/logo//") . $find->invoice_logo;
-    //                 if (File::exists($image_path)) {
-    //                     File::delete($image_path);
-    //                     // Create File
-    //                     $file = $request->file('invoice_logo');
-    //                     $extension = $file->getClientOriginalExtension();
-    //                     $filename = time() . '.' . $extension;
-    //                     $file->move(public_path('storage/invoice/logo'), $filename);
-    //                     User::where('id', Auth::user()->id)
-    //                         ->update([
-    //                             'invoice_logo' => $filename,
-    //                         ]);
-    //                 }
-    //             }
-    //             if ($request->invoice_terms != null) {
-    //                 User::where('id', Auth::user()->id)->update([
-    //                     'terms' => $request->invoice_terms,
-    //                 ]);
-    //             }
-
-
-    //             // invocie Logo name End
-    //             $status = "";
-    //             if ($request->receive_advance_amount === $request->final_total) {
-    //                 $status = "paid";
-    //             } else {
-    //                 $status = "due";
-    //             }
-    //             // Update Invoice Data
-    //             $data = array(
-    //                 'invoice_logo' => 0,
-    //                 'currency' => $request->currency,
-    //                 'invoice_form' => $request->invoice_form,
-    //                 'invoice_to' => $request->invoice_to,
-    //                 'invoice_id' => $request->invoice_id,
-    //                 'invoice_date' => $request->invoice_date,
-    //                 'invoice_payment_term' => $request->invoice_payment_term,
-    //                 'invoice_dou_date' => $request->invoice_dou_date,
-    //                 'invoice_po_number' => $request->invoice_po_number,
-    //                 'invoice_notes' => $request->invoice_notes,
-    //                 'invoice_terms' => 0,
-    //                 'invoice_tax_percent' => $request->invoice_tax,
-    //                 'invoice_tax_amounts' => round($request->invoice_tax_amounts, 2),
-
-    //                 'requesting_advance_amount_percent' => round($request->requesting_advance_amount, 2),
-    //                 'total' => round($total, 2),
-    //                 'final_total' => round($request->final_total, 2),
-    //                 'receive_advance_amount' => round($request->receive_advance_amount, 2),
-    //                 'balanceDue_amounts' => round($request->balanceDue_amounts, 2),
-    //                 'discount_amounts' => round($request->discount_amounts, 2),
-    //                 'discount_percent' => $request->discount_percent,
-
-    //                 'invoice_status' => 'complete',
-    //                 'status_due_paid' => $status,
-    //                 'subtotal_no_vat' => round($request->subtotal_no_vat, 2),
-    //                 'template_name' => $request->template_name,
-    //                 'invoice_signature' => $request->invoice_signature,
-    //             );
-    //             $invoice =  Invoice::updateOrCreate(['id' => $id], $data);
-    //             return response()->json([$invoice->id]);
-    //         }
-    //         return response()->json(['message' => 'Please create product']);
-    //     } else {
-    //         return response()->json(['message' => '123']);
-    //     }
-    // }
-
-    // new version of store function
     public function store(Request $request)
     {
 
@@ -413,6 +254,20 @@ class InvoiceController extends Controller
 
         $isAllowedTemplate = $template_id_check == 1 || $packages->contains(fn($p) => (int) $p->template === (int) $template_id_check);
         $activePackage = $packages->first();
+
+        // checking  error for test
+        // return response()->json([
+        //     'message' => 'No active package found or template not allowed.',
+        //     'data' => $activePackage,
+        // ]);
+
+
+        // check package expired
+        $subscription = Subscription::where('user_id', $user_id)->latest()->first();
+        if ($subscription && $this->isPackageExpired($subscription->starts_at, $subscription->ends_at)) {
+            return response()->json(['message' => 'Your package has expired.']);
+        }
+
 
         // If no active package found, try to get Free Plan
         if (!$activePackage) {
@@ -522,9 +377,29 @@ class InvoiceController extends Controller
         $check->increment('current_invoice_total');
 
         return response()->json([$invoice->id]);
+    }
 
-        // If we reach here, something went wrong
-        // return response()->json(['message' => 'Fill up invoice form properly or package limit reached.']);
+    // this function check package expired
+    /**
+     * Check if the package is expired based on start and end date.
+     *
+     * @param string $startDate
+     * @param string $endDate
+     * @return bool
+     */
+    function isPackageExpired($startDate, $endDate): bool
+    {
+        // Both $startDate and $endDate are expected to be date strings like '2025-07-29 11:32:02'
+        if (!$startDate || !$endDate) {
+            return true;
+        }
+
+        $now = Carbon::now();
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+
+        // Expired if now is after end date
+        return $now->gt($end);
     }
 
 
