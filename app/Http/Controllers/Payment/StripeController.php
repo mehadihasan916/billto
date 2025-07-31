@@ -92,6 +92,7 @@ class StripeController extends Controller
             // Create a new subscription record
             Subscription::create([
                 'user_id' => auth()->id(),
+                'package_id' => $subscription_package->id,
                 'payment_record_id' => $records->id,
                 'name' => $subscription_package->packageName,
                 'price' => $subscription_package->price,

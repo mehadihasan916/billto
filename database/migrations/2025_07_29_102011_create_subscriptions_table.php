@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->foreignId('package_id')->nullable(); // Added package_id to link to SubscriptionPackage
             $table->foreignId('payment_record_id')->nullable();
             $table->string('name');
             $table->string('price');
