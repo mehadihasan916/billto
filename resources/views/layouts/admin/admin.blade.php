@@ -69,6 +69,7 @@
     <script src="{{ asset('assets/admin/assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/js/dashboard.js') }}"></script>
 
+    @stack('admin_js')
 
 
 </body>

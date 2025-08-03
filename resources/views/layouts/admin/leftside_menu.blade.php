@@ -10,14 +10,11 @@
                             <li class="menu-title" key="t-menu">Menu</li>
 
                             <li>
-                                <a href="javascript: void(0);" class="waves-effect">
-                                    <i class="bx bx-home-circle"></i><span
-                                        class="badge rounded-pill bg-info float-end">04</span>
+                                <a href="{{ route('admin.dashboard') }}" class="waves-effect">
+                                    <i class="bx bx-home-circle"></i>
                                     <span key="t-dashboards">Dashboards</span>
                                 </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="index.html" key="t-default">Default</a></li>
-                                </ul>
+
                             </li>
 
                             {{-- package --}}
@@ -70,6 +67,13 @@
                                         {{-- <li><a href="{{ url('admin/organization/package/list') }}" key="t-horizontal">Organization Package
                                             list</a></li> --}}
                                 </ul>
+                            </li>
+                            {{-- Users --}}
+                            <li>
+                                <a href="{{ route('admin.users') }}" class="waves-effect">
+                                    <i class="bx bx-user"></i>
+                                    <span key="t-dashboards">Users</span>
+                                </a>
                             </li>
 
                             {{-- <li class="menu-title" key="t-apps">Apps</li>

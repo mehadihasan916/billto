@@ -25,7 +25,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'phone',
-        'profileImage'
+        'profileImage',
+        'picture__input',
+        'signature',
+        'terms',
+        'email_verified_at',
     ];
 
     /**
@@ -56,5 +60,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function paymentGetway()
     {
         return $this->hasOne(PaymentGetway::class);
+    }
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class)->latestOfMany();
+    }
+    public function used_invoices()
+    {
+        return $this->hasOne(ComplateInvoiceCount::class);
     }
 }

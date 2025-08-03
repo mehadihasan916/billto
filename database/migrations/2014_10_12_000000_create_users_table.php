@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('plan', ['free', 'premium'])->default('free');
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamps();       
         });
     }
 
