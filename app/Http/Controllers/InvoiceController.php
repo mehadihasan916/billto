@@ -302,9 +302,8 @@ class InvoiceController extends Controller
             $check->save();
         }
 
-        // Enforce Free Plan limit (5 per month)
-        $limit = ($activePackage->price == 0) ? 5 : ($activePackage->limitInvoiceGenerate ?? 999999);
-        if ($check->current_invoice_total >= $limit) {
+        // check package limited
+        if ($subscription && $subscription->invoice_generate <= $check->current_invoice_total) {
             return response()->json(['message' => 'Your package limit is over! Please update your package.']);
         }
 

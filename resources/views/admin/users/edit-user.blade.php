@@ -70,10 +70,11 @@
                                         <small class="text-muted">Current signature shown. Upload new to update.</small>
                                     @endif
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <label for="terms" class="form-label fw-semibold">Terms</label>
                                     <textarea class="form-control rounded-3" id="terms" name="terms" rows="3">{{ $user->terms }}</textarea>
                                 </div>
+                                <h4 >Plan Settings</h4>
                                 <div class="col-md-4">
                                     <label for="package" class="form-label fw-semibold">Package</label>
                                     <select class="form-select rounded-pill" id="package" name="package">
@@ -88,6 +89,15 @@
 
                                     </select>
 
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="limit">Invoice limit</label>
+                                    <input type="number" class="form-control rounded-pill" id="limit" name="invoice_limit" value="{{ $user->subscription->invoice_generate ?? 0 }}" min="0" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="endDate">End Date || {{ \Carbon\Carbon::parse($user->subscription->ends_at)->diffForHumans() }}</label>
+                                    <input type="date" class="form-control rounded-pill" id="endDate" name="end_date" value="{{ $user->subscription->ends_at ? \Carbon\Carbon::parse($user->subscription->ends_at)->format('Y-m-d') : '' }}" required>
                                 </div>
 
                                 <div class="col-md-6">

@@ -81,7 +81,26 @@ class UserController extends Controller
             $data['signature'] = $signatureName;
         }
 
-        $this->assignSubscription($request->package, $user->id);
+        $old_package_id = $user->subscription ? $user->subscription->package_id : null;
+
+        // subscription update
+        if ($user->subscription->invoice_generate != $request->invoice_limit) {
+            $subscription = Subscription::where('id', $user->subscription->id)->first();
+            $subscription->update([
+                'invoice_generate' => $request->invoice_limit,
+            ]);
+        }
+        // Update end date if provided
+        if (Carbon::parse($request->end_date) != $user->subscription->ends_at) {
+            $subscription = Subscription::where('id', $user->subscription->id)->first();
+            $endDate = Carbon::parse($request->end_date);
+            $subscription->update([
+                'ends_at' => $endDate,
+            ]);
+        }
+
+
+        $this->assignSubscription($request->package, $user->id, $old_package_id);
 
         // dd($request->all());
 
@@ -91,7 +110,7 @@ class UserController extends Controller
         return redirect()->route('admin.users')->with('success', 'User updated successfully.');
     }
 
-    public function assignSubscription($packages_id, $user_id)
+    public function assignSubscription($packages_id, $user_id, $old_package_id = null)
     {
         $subscription_package = SubscriptionPackage::where('id', $packages_id)->first(); // Assuming 1 is the ID for the Free Plan
         if (!$subscription_package) {
@@ -119,19 +138,21 @@ class UserController extends Controller
             ]
         );
 
-        // Create a new subscription record for the free plan
-        Subscription::create([
-            'user_id' => $user_id,
-            'package_id' => $subscription_package->id,
-            'name' => $subscription_package->packageName,
-            'price' => $subscription_package->price,
-            'invoice_template' => $subscription_package->templateQuantity,
-            'invoice_generate' => $subscription_package->limitInvoiceGenerate,
-            'duration' => $subscription_package->packageDuration,
-            'status' => 1, // Active
-            'starts_at' => Carbon::now(),
-            'ends_at' => Carbon::now()->addDays($subscription_package->packageDuration),
-        ]);
+        // if old old_package_id = new package_id than return or not create new subscription
+        if (!$old_package_id || $old_package_id != $packages_id) {
+            Subscription::create([
+                'user_id' => $user_id,
+                'package_id' => $subscription_package->id,
+                'name' => $subscription_package->packageName,
+                'price' => $subscription_package->price,
+                'invoice_template' => $subscription_package->templateQuantity,
+                'invoice_generate' => $subscription_package->limitInvoiceGenerate,
+                'duration' => $subscription_package->packageDuration,
+                'status' => 1, // Active
+                'starts_at' => Carbon::now(),
+                'ends_at' => Carbon::now()->addDays($subscription_package->packageDuration),
+            ]);
+        }
     }
 
     //send expired notification
