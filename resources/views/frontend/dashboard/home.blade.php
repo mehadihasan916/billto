@@ -7,6 +7,10 @@
 <!--dashboard custom css-->
 <link rel="stylesheet" href="{{ asset('assets/frontend/css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/frontend/css/datatable_css_custom.css') }}">
+{{-- datatable css  --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
 @endpush
 
 
@@ -187,13 +191,26 @@ left_manu
                                 </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>{{__('messages.TOTAL')}} : {{ number_format($Total_Amount_conut, 2) }}</th>
+                                    <th>{{__('messages.PAID')}} : {{ number_format($paid_Total_Amount_conut, 2) }}</th>
+                                    <th>{{__('messages.DUE')}} : {{ number_format($due_Total_Amount_conut, 2) }}</th>
+                                    <th></th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </tfoot>
                         </table>
 
                         <div class="row">
                             <div class="col-4 col-sm-6 col-md-7">
                                 {{ $allInvoiceDatas->links() }}
                             </div>
-                            <div class="col-8 col-sm-6 col-md-5">
+                            {{-- <div class="col-8 col-sm-6 col-md-5">
                                 <div class="row">
                                     <div class="col-4">
                                         <p class="total_text_design">{{__('messages.TOTAL')}} </p>
@@ -217,7 +234,7 @@ left_manu
                                     </div>
 
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -238,13 +255,51 @@ left_manu
 @push('frontend_js')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+
+<!-- Dependencies for Excel/PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
             paging: true
         , });
     });
+
+    // DataTable
+    new DataTable('#cart_realaod_table', {
+        layout: {
+            topStart: {
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true
+                    },
+                    {
+                        extend: 'pdf',
+                        footer: true
+                    }
+                ]
+            }
+        },
+        // Required to activate buttons
+        dom: 'Bfrtip',
+        footer: true // This is not a DataTables option, but keep for clarity
+    });
+
 
 </script>
 @endpush
