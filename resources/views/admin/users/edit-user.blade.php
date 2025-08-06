@@ -70,9 +70,24 @@
                                         <small class="text-muted">Current signature shown. Upload new to update.</small>
                                     @endif
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <label for="terms" class="form-label fw-semibold">Terms</label>
                                     <textarea class="form-control rounded-3" id="terms" name="terms" rows="3">{{ $user->terms }}</textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="package" class="form-label fw-semibold">Package</label>
+                                    <select class="form-select rounded-pill" id="package" name="package">
+                                        @isset($packages)
+                                            <option value="">Select Package</option>
+                                            @foreach($packages as $package)
+                                                <option value="{{ $package->id }}" {{ $user->subscription->package_id == $package->id ? 'selected' : '' }}>
+                                                    {{ $package->packageName ?? "N/A" }} ({{ $package->price ?? '' }})
+                                                </option>
+                                            @endforeach
+                                        @endisset
+
+                                    </select>
+
                                 </div>
 
                                 <div class="col-md-6">
@@ -83,6 +98,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 text-end">
+                                    <a href="{{ route('admin.users') }}" class="btn  btn-dark px-5 rounded-pill" >Cancel</a>
                                     <button type="submit" class="btn btn-primary px-5 rounded-pill" id="updateBtn">
                                         <span id="btnText">Update</span>
                                         <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>

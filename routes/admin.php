@@ -51,4 +51,6 @@ Route::group([
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
+    //send expired notification
+    Route::get('send-expired-notification/{id}', [UserController::class, 'sendExpiredMail'])->name('users.sendExpiredMail');
 });
