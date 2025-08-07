@@ -22,6 +22,11 @@ class SubscriptionExpired extends Mailable
     public function __construct($user)
     {
         $this->user = $user;
+        // update the subscription status to notified
+        $subscription = $user->subscription;
+        if ($subscription) {
+            $subscription->update(['notified' => true]);
+        }
     }
 
     /**

@@ -20,5 +20,6 @@ class Subscription extends Model
         'status',
         'starts_at',
         'ends_at',
+        'notified'
     ];
 }

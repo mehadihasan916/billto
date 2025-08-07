@@ -528,7 +528,7 @@
                                 </div>
                                 <div class="pricing_btn_design">
                                     <a href="{{ url('payment-gateway', $sub_package_stnd->id) }}"><button
-                                            class="btnCss">Coming Soon</button></a>
+                                            class="btnCss">Buy Now</button></a>
                                 </div>
                             </div>
                         </div>

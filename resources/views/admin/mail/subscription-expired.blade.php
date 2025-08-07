@@ -58,7 +58,7 @@
         </div>
         <div class="details">
             Hello <strong>{{ $user->name }}</strong>,<br><br>
-            Your subscription ended on <strong>{{ \Carbon\Carbon::parse($user->subscription->end_date)->format('F j, Y') }}</strong>.<br>
+            Your subscription ended on <strong>{{ \Carbon\Carbon::parse($user->subscription->ends_at)->format('F j, Y') }}</strong>.<br>
             To continue enjoying our services, please renew your subscription.
         </div>
         <div style="text-align:center;">

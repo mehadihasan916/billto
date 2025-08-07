@@ -106,20 +106,25 @@
                                                 </td>
                                                 <td>
                                                     <div class="gap-2">
-                                                                                                            {{-- send expired notification --}}
-                                                        <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" data-bs-content="<strong>Send subscription expired mail</strong><br>Notify user about expired subscription.">
-                                                            <a class="btn btn-sm btn-primary" href="{{ route('admin.users.sendExpiredMail', $user->id) }}">
-                                                                <i class="bi bi-envelope-fill"></i> Send Mail
-                                                            </a>
-                                                        </span>
-                                                        <script>
-                                                            document.addEventListener('DOMContentLoaded', function () {
-                                                                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-                                                                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                                                                    return new bootstrap.Popover(popoverTriggerEl)
-                                                                })
-                                                            });
-                                                        </script>
+                                                        {{-- send expired notification --}}
+                                                        @if(!$user->subscription || ($user->subscription->ends_at && now()->gt($user->subscription->ends_at)))
+                                                            <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true"
+                                                                data-bs-content="<strong>Send subscription expired mail</strong><br>{{ optional($user->subscription)->notified == 1 ? 'Already notified' : 'Notify user about expired subscription.' }}">
+                                                                <a class="btn btn-sm {{ optional($user->subscription)->notified == 1 ? 'btn-primary' : 'btn-warning' }}"
+                                                                    href="{{ route('admin.users.sendExpiredMail', $user->id) }}">
+                                                                    <i class="bi bi-envelope-fill"></i> Send Mail
+                                                                </a>
+                                                            </span>
+                                                            <script>
+                                                                document.addEventListener('DOMContentLoaded', function () {
+                                                                    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+                                                                    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                                                                        return new bootstrap.Popover(popoverTriggerEl)
+                                                                    })
+                                                                });
+                                                            </script>
+                                                        @endif
+
 
                                                         {{-- edit user  --}}
                                                         <a class="btn btn-success btn-sm" href="{{ route('admin.users.edit', $user->id) }}"> Edit </a>
