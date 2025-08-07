@@ -19,7 +19,7 @@
     <!-- App Css-->
     <link href="{{ asset('assets/admin') }}/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
-
+    @stack('admin_style_css')
 </head>
 
 <body data-sidebar="dark">

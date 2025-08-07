@@ -2,6 +2,10 @@
 @section('title', 'Home Page')
 
 @push('admin_style_css')
+{{-- datatable css  --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
 @endpush
 @section('page_content')
     <div class="main-content">
@@ -30,7 +34,7 @@
                                 <h4 class="card-title">User List</h4>
                             </div>
                             <div class="card-body">
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <table id="usersTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th>SL</th>
@@ -152,7 +156,23 @@
             </div>
         </div>
     </div>
+
+
+
 @endsection
 
-@push('admin_style_js')
+
+@push('admin_js')
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+
+<script>
+
+    // DataTable
+    new DataTable('#usersTable', {
+        scrollX: true,
+        scrollY: 200
+    });
+</script>
 @endpush
