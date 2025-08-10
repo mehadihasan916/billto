@@ -172,7 +172,6 @@
     // DataTable
     new DataTable('#usersTable', {
         scrollX: true,
-        scrollY: 200
     });
 </script>
 @endpush
