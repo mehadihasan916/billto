@@ -76,4 +76,27 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Subscription::class)->latestOfMany('created_at');
     }
+
+    // delete all records related to user
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            // Delete related invoices
+            $user->invoice()->delete();
+
+            // Delete related payment gateway record
+            $user->paymentGetway()->delete();
+
+            // Delete subscription
+            $user->subscription()->delete();
+
+            // Delete used invoice count
+            $user->used_invoices()->delete();
+
+            // Delete all subscriptions if needed
+            $user->latestSubscription()->delete();
+        });
+    }
 }
