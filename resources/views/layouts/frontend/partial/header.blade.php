@@ -1,8 +1,48 @@
+{{-- @auth
+@if(isset($subscriptionExpired) && $subscriptionExpired)
+    <div class="expired-notify w-100 text-center py-3" style="background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); color: white; font-weight: 500; box-shadow: 0 2px 10px rgba(255, 75, 43, 0.3); backdrop-filter: blur(10px);">
+        <div class="container d-flex justify-content-center align-items-center gap-3 flex-wrap">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                {{__('messages.Your subscription has expired. Please renew your package to continue using all features.')}}
+            </div>
+            <a href="{{ url('/payment-gateway', Auth::user()->subscription->package_id ?? 1) }}"
+               class="btn btn-light btn-sm px-4 py-2 rounded-pill text-danger fw-bold hover-scale"
+               style="transition: all 0.3s ease;">
+                {{__('messages.Renew Now')}}
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+@endif
+@endauth --}}
+
+@auth
+@if(isset($subscriptionExpired) && $subscriptionExpired)
+    <div class="expired-notify w-100 text-center py-2"
+         style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+                color: white;
+                font-weight: 500;
+                box-shadow: 0 2px 10px rgba(255, 126, 95, 0.4);
+                backdrop-filter: blur(10px);">
+        <div class="container d-flex justify-content-center align-items-center gap-2 flex-wrap">
+            <div class="d-flex align-items-center ">
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                {{__('messages.Your subscription has expired. Please renew your package to continue using all features.')}}
+            </div>
+            <a href="{{ url('/payment-gateway', Auth::user()->subscription->package_id ?? 1) }}"
+               class="btn btn-light btn-sm  rounded-pill text-danger fw-bold hover-scale"
+               style="transition: all 0.3s ease;">
+                {{__('messages.Renew Now')}}
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+@endif
+@endauth
 
 
 <header class="header_sevtion sticky-top p-0 m-0">
-
-
     <nav class="navbar   navbar-expand-lg navbar-light p-0 m-0 " style="background-color: #F0F0F0; z-index: 9999999;">
         <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">

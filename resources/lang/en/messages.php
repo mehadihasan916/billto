@@ -6,6 +6,8 @@ return [
     'Signout'=>'Sign out',
     'Signin'=>'Sign in',
     'CreateBill'=>'Create Bill',
+    'Your subscription has expired. Please renew your package to continue using all features.'=>'Your subscription has expired. Please renew your package to continue using all features.',
+    'Renew Now'=>'Renew Now',
 
     // home.blade.php
     // first section

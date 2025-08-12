@@ -6,6 +6,8 @@ return [
     'Signout'=>'লগ আউট',
     'Signin'=>'সাইন ইন করুন',
     'CreateBill'=>'বিল তৈরি করুন',
+    'Your subscription has expired. Please renew your package to continue using all features.'=>'আপনার সাবস্ক্রিপশন মেয়াদ শেষ হয়ে গেছে। সমস্ত বৈশিষ্ট্য ব্যবহার চালিয়ে যেতে আপনার প্যাকেজ নবায়ন করুন।',
+    'Renew Now'=>'এখনই নবায়ন করুন',
 
     // home.blade.php
     // first section
