@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DoumentController;
+use App\Http\Controllers\Admin\InvoiceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\UserController;
@@ -53,4 +54,10 @@ Route::group([
     Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
     //send expired notification
     Route::get('send-expired-notification/{id}', [UserController::class, 'sendExpiredMail'])->name('users.sendExpiredMail');
+
+    //invoice route
+    Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
+    Route::delete('/invoice/{id}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+    //indecisive user invoices
+    Route::get('/invoices/{id}', [InvoiceController::class, 'userInvoices'])->name('invoice.list');
 });

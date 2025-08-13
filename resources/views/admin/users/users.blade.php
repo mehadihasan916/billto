@@ -54,7 +54,7 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td><strong>{{ $user->name }}</strong></td>
+                                                <td><a href="{{ route('admin.invoice.list', $user->id) }}"><strong>{{ $user->name }}</strong></a></td>
                                                 <td>{{ $user->email }}</td>
                                                 <td><span class="badge bg-primary">{{ $user->subscription->name ?? 'N/A' }}</span></td>
                                                 <td>{{ $user->subscription->price ?? 'N/A' }} $</td>

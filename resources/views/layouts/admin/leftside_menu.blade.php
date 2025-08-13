@@ -75,6 +75,12 @@
                                     <span key="t-dashboards">Users</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.invoice') }}" class="waves-effect">
+                                    <i class="bx bx-receipt"></i>
+                                    <span key="t-dashboards">Invoice</span>
+                                </a>
+                            </li>
 
                             {{-- <li class="menu-title" key="t-apps">Apps</li>
 
