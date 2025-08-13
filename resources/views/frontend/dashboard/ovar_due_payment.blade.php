@@ -92,7 +92,17 @@ active_left
                                         <button title="Send mail" style="background-color: #686868" type="button" id="send_email_id" class="btn btn-sm btn_edit send_invoice_mail" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> <i class="bi bi-envelope-fill"></i>
                                         </button>
 
-                                        <a title="Download" style="background-color: #686868" href="/invoice/download/{{ $invoiceData->id }}" target="_blank" class="btn btn-sm btn_edit "> <i class="bi bi-arrow-down"></i> </a>
+                                            @auth
+                                                @if(isset($subscriptionExpired) && $subscriptionExpired)
+                                                    <button title="Download" style="background-color: #686868" class="btn btn-sm btn_edit disabled" disabled>
+                                                        <i class="bi bi-arrow-down"></i>
+                                                    </button>
+                                                @else
+                                                    <a title="Download" style="background-color: #686868" href="/invoice/download/{{ $invoiceData->id }}" target="_blank" class="btn btn-sm btn_edit">
+                                                        <i class="bi bi-arrow-down"></i>
+                                                    </a>
+                                                @endif
+                                            @endauth
                                         @else
 
                                         @endif

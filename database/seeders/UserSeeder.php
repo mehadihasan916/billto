@@ -36,19 +36,9 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'womenindigital',
             'email' => 'womenindigital@gmail.com',
-            'is_admin' => false,
-            'email_verified_at' => now(),
-            'password' => Hash::make('womenindigital'),
-            'plan' => 'premium',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        DB::table('users')->insert([
-            'name' => 'Women in Digital',
-            'email' => 'womenindigitalbd@gmail.com',
             'is_admin' => true,
             'email_verified_at' => now(),
-            'password' => Hash::make('11111111'),
+            'password' => Hash::make('womenindigital'),
             'plan' => 'premium',
             'created_at' => now(),
             'updated_at' => now(),

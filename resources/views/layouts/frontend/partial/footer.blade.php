@@ -39,16 +39,38 @@
             <div class="modal-body" style="padding: 0.5rem 1rem 0rem 1rem;">
                 <div class="row">
                     <form action="{{ route('payment.save') }}" method="POST">
-                        @csrf
-                    <div class="preview_invoice_show1">
+                            @csrf
 
-                    </div>
-                    <div class="modal-footer modal_footer ">
-                        <button type="button" class="btn btn-outline-danger btn-sm "
-                            data-bs-dismiss="modal"> <i class="bi bi-x-circle"></i>{{__('messages.Close')}}  </button>
-                        <button class="btn  btn-sm btn-warning disabled"  id="submit_btn"><i class="bi bi-clipboard-plus"></i> {{ __('messages.submit_btn') }}  </button>
-                    </div>
-                </form>
+                        @auth
+                            @if(isset($subscriptionExpired) && $subscriptionExpired)
+                                <div class="position-relative">
+                                    <div class="preview_invoice_show1" style="filter: blur(3px); pointer-events: none; user-select: none;"></div>
+                                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                        <i class="bi bi-lock-fill fs-1 text-danger"></i>
+                                        <h5 class="text-danger mt-2">Your subscription has expired.</h5>
+                                    </div>
+                                </div>
+                                <!-- Disable form inputs when subscription expired -->
+                                <script>
+                                    document.querySelectorAll('form input, form select, form textarea').forEach(element => {
+                                        element.disabled = true;
+                                    });
+                                    // Also disable date_id inputs specifically
+                                    document.querySelectorAll('#date_id').forEach(element => {
+                                        element.disabled = true;
+                                    });
+                                </script>
+                            @else
+                                <div class="preview_invoice_show1"></div>
+                            @endif
+                        @endauth
+
+                        <div class="modal-footer modal_footer ">
+                            <button type="button" class="btn btn-outline-danger btn-sm "
+                                data-bs-dismiss="modal"> <i class="bi bi-x-circle"></i>{{__('messages.Close')}}  </button>
+                            <button class="btn  btn-sm btn-warning disabled"  id="submit_btn"><i class="bi bi-clipboard-plus"></i> {{ __('messages.submit_btn') }}  </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -64,29 +86,69 @@
             </div>
 
             <div class="modal-body">
-                <div class="row">
-                    <input type="hidden" id="last_invoice_id" name="template_id">
-                    <div class="mb-3">
-                        <label for="emai_to" class="form-label">{{__('messages.To_send')}}</label>
-                        <input type="email" class="form-control" id="emai_to" name="emai_to" placeholder="{{ __('messages.placeholder_email_example') }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email_subject" class="form-label">{{__('messages.Subject')}}</label>
-                        <input type="text" class="form-control" id="email_subject" name="email_subject" id="Input2" value="{{ __('messages.placeholder_subject_A_Invoice_by_Billto.io') }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email_body" class="form-label">{{__('messages.Body')}}</label>
-                        <textarea class="form-control" id="email_body" name="email_body" rows="2">{{ __('messages.placeholder_body_A_invoice_has_been_sent_to_you_by') }}.</textarea>
-                    </div>
+                @auth
+                @if(isset($subscriptionExpired) && $subscriptionExpired)
+                    <div class="position-relative">
+                        <div class="row" style="filter: blur(3px); pointer-events: none; user-select: none;">
+                            <input type="hidden" id="last_invoice_id" name="template_id">
+                            <div class="mb-3">
+                                <label for="emai_to" class="form-label">{{__('messages.To_send')}}</label>
+                                <input type="email" class="form-control" id="emai_to" name="emai_to" placeholder="{{ __('messages.placeholder_email_example') }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email_subject" class="form-label">{{__('messages.Subject')}}</label>
+                                <input type="text" class="form-control" id="email_subject" name="email_subject" value="{{ __('messages.placeholder_subject_A_Invoice_by_Billto.io') }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email_body" class="form-label">{{__('messages.Body')}}</label>
+                                <textarea class="form-control" id="email_body" name="email_body" rows="2">{{ __('messages.placeholder_body_A_invoice_has_been_sent_to_you_by') }}.</textarea>
+                            </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger btn-sm " data-bs-dismiss="modal"> <i class="bi bi-x-circle"></i>{{__('messages.Close')}}</button>
-                        <button id="send_mail_data" class="btn send-invoice btn-sm btn-outline-warning"><i class="bi bi-send"></i>
-                            {{__('messages.Send_Mail')}}</button>
-                        {{-- <button class="btn send-invoice btn-sm btn-outline-warning"><i class="bi bi-send"></i>
-                            Send Mail</button> --}}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">
+                                    <i class="bi bi-x-circle"></i>{{__('messages.Close')}}
+                                </button>
+                                <button id="send_mail_data" class="btn send-invoice btn-sm btn-outline-warning">
+                                    <i class="bi bi-send"></i>{{__('messages.Send_Mail')}}
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Lock Icon Overlay --}}
+                        <div class="position-absolute top-50 start-50 translate-middle text-center">
+                            <i class="bi bi-lock-fill fs-1 text-danger"></i>
+                            <h5 class="text-danger mt-2">Your subscription has expired.</h5>
+                        </div>
                     </div>
-                </div>
+                @else
+                    {{-- Normal form without blur --}}
+                    <div class="row">
+                        <input type="hidden" id="last_invoice_id" name="template_id">
+                        <div class="mb-3">
+                            <label for="emai_to" class="form-label">{{__('messages.To_send')}}</label>
+                            <input type="email" class="form-control" id="emai_to" name="emai_to" placeholder="{{ __('messages.placeholder_email_example') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email_subject" class="form-label">{{__('messages.Subject')}}</label>
+                            <input type="text" class="form-control" id="email_subject" name="email_subject" value="{{ __('messages.placeholder_subject_A_Invoice_by_Billto.io') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email_body" class="form-label">{{__('messages.Body')}}</label>
+                            <textarea class="form-control" id="email_body" name="email_body" rows="2">{{ __('messages.placeholder_body_A_invoice_has_been_sent_to_you_by') }}.</textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle"></i>{{__('messages.Close')}}
+                            </button>
+                            <button id="send_mail_data" class="btn send-invoice btn-sm btn-outline-warning">
+                                <i class="bi bi-send"></i>{{__('messages.Send_Mail')}}
+                            </button>
+                        </div>
+                    </div>
+                @endif
+                @endauth
+
             </div>
         </div>
     </div>
