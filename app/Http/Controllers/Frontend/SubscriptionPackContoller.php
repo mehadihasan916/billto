@@ -41,16 +41,18 @@ class SubscriptionPackContoller extends Controller
 
     public function payment_gateway_store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
+        if ($request->package_id == 1) {
+            return redirect()->back()->with('delete', 'You’ve already used your lifetime free plan, so it can’t be activated again.');
+        }
         $request->validate([
             'package_price' => 'required',
             'package_id' => 'required',
             // 'auth_user_id'=>'required'
         ]);
-
-        if (1 == $request->package_id) {
-            return redirect()->back()->with('delete', 'Something went wrong. Please try again.');
-        }
 
         $subscriptn_package =  SubscriptionPackage::where('id', $request->package_id)->first();
 
