@@ -132,6 +132,28 @@
                                 </div>
                             </div>
 
+                            <!-- visitors ip -->
+                            <div class="col-md-3 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-baseline">
+                                            <h6 class="card-title mb-0">Total Visitors </h6>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-md-12 col-xl-5">
+                                                <h3 class="mb-2">{{ $traffic->count() }}</h3>
+
+                                            </div>
+                                            <div>
+                                                {{-- see details button  --}}
+                                                <a href="{{ route('admin.traffic.index') }}" class="btn btn-primary">See Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                         </div>
 

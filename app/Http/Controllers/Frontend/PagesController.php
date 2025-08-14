@@ -10,12 +10,17 @@ use App\Models\InvoiceTemplate;
 use App\Models\SubscriptionPackage;
 use App\Http\Controllers\Controller;
 use App\Models\ComplateInvoiceCount;
+use App\Models\Traffic;
 use Illuminate\Support\Facades\Auth;
+use Stevebauman\Location\Facades\Location;
 
 class PagesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        Traffic::set($request);
+
         // Only for google, facebook & Github check request start
         if (Auth::check()) {
             $get_id =  Auth::user()->id;

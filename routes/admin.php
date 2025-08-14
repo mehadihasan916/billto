@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\InvoiceTemplateController;
 use App\Http\Controllers\OrganizationPackageController;
 use App\Http\Controllers\SubscriptionPackageController;
+use App\Http\Controllers\TrafficController;
 use App\Models\OrganizationPackage;
 
 
@@ -59,5 +60,7 @@ Route::group([
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
     Route::delete('/invoice/{id}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
     //indecisive user invoices
-    Route::get('/invoices/{id}', [InvoiceController::class, 'userInvoices'])->name('invoice.list');
+    Route::get('/profile/{id}', [InvoiceController::class, 'userInvoices'])->name('invoice.list');
+    //traffic route
+    Route::get('/traffic', [TrafficController::class, 'index'])->name('traffic.index');
 });
