@@ -2,6 +2,10 @@
 @section('title', 'Home Page')
 
 @push('admin_style_css')
+{{-- datatable css  --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
 @endpush
 @section('page_content')
     <div class="main-content">
@@ -32,7 +36,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Traffic List</h4>
                                 <p class="card-title-desc">All traffic list are shown in this table</p>
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                <table id="visitorsTable" class="table table-bordered dt-responsive nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
@@ -45,6 +49,9 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($traffics as $key => $traffic)
+                                            @php
+                                                $details = json_decode($traffic->details);
+                                            @endphp
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $traffic->ip }}</td>
@@ -55,7 +62,24 @@
                                                         Unregistered
                                                     @endif
                                                 </td>
-                                                <td>{{ $traffic->details }}</td>
+                                                <td>
+                                                    @if($details)
+                                                        <p> <span class="badge bg-primary">Country</span> : {{ $details->countryName }}  <span class="badge bg-black">City</span> : {{ $details->cityName }}</p>
+                                                        <p> <span class="badge bg-primary">Region</span> : {{ $details->regionName }}  <span class="badge bg-black">Region Code</span> : {{ $details->regionCode }}</p>
+
+                                                        <p>
+                                                            Latitude: {{ $details->latitude }} |
+                                                            Longitude: {{ $details->longitude }}
+                                                            <a href="https://www.google.com/maps?q={{ $details->latitude }},{{ $details->longitude }}"
+                                                               target="_blank"
+                                                               class="btn btn-sm btn-primary">
+                                                                <i class="fas fa-map-marker-alt"></i> View on Map
+                                                            </a>
+                                                        </p>
+                                                    @else
+                                                        No details available
+                                                    @endif
+                                                </td>
                                                 <td>{{ $traffic->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -74,10 +98,21 @@
 
 
 @endsection
-@push('admin_style_js')
-    <script>
-        $(document).ready(function() {
-            $('#datatable').DataTable();
-        });
-    </script>
+@push('admin_js')
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+
+<script>
+
+    // DataTable
+    new DataTable('#visitorsTable', {
+        scrollX: true,
+        pageLength: 100,
+        lengthMenu: [
+            [25, 50, 100, -1],
+            [25, 50, 100, 'All']
+        ],
+    });
+</script>
 @endpush

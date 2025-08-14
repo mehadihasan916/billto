@@ -152,7 +152,6 @@
                                 @if($sub_package_free->price == '0')
                                     {{-- Free Plan - Direct activation --}}
                                     <form action="{{ route('payment.store', $sub_package_free->id) }}" method="POST" class="pricing_btn_design">
-                                        @method('POST')
                                         @csrf
                                         <input type="hidden" name="package_id" value="{{ $sub_package_free->id }}">
                                         <input type="hidden" name="package_price" value="{{ $sub_package_free->price }}">
@@ -239,7 +238,6 @@
                                     {{-- Free Plan - Direct activation --}}
                                     <form action="{{ route('payment.store') }}" method="POST" class="px-2 mb-2">
                                         @csrf
-                                        @method('POST')
                                         <input type="hidden" name="package_id" value="{{ $sub_package_free->id }}">
                                         <input type="hidden" name="package_price" value="{{ $sub_package_free->price }}">
                                         <button type="submit" class="btn btn-success w-100 py-2">
