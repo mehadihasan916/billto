@@ -71,6 +71,7 @@ function addData() {
 
 
     $('#completeInvoice').removeClass("d-none");
+    $('#draft_btn').removeClass("d-none");
     $('#previw_id').addClass("d-none");
     $('#complate_invoice_id').addClass("d-none");
 
@@ -101,6 +102,7 @@ function addData() {
                 clearData();
                 allData();
                 document.getElementById("completeInvoice").disabled = false;
+                document.getElementById("draft_btn").disabled = false;
             },
             error: function (error) {
                 console.log(error);
@@ -137,7 +139,7 @@ function addData() {
 $("#invoiceForm").submit(function (e) {
     e.preventDefault();
     const fd = new FormData(this);
-    // alert(0);
+    // alert("Invoice Form Submit");
     $.ajax({
         url: '/invoices/store',
         method: 'post',
@@ -178,6 +180,7 @@ $("#invoiceForm").submit(function (e) {
                 $('#previw_id').removeClass("d-none");
                 $('#complate_invoice_id').removeClass("d-none");
                 $('#completeInvoice').addClass("d-none");
+                $('#draft_btn').addClass("d-none");
             }
         },
         error: function (error) {
@@ -877,6 +880,7 @@ $("#complate_invoice_id").on("click", function () {
 
 $(".save_btn_anable").on("click", function () {
     $('#completeInvoice').removeClass("d-none");
+    $('#draft_btn').removeClass("d-none");
     $('#previw_id').addClass("d-none");
 
 });
@@ -885,7 +889,7 @@ $(".save_btn_anable").on("click", function () {
 
 $(document).on("change", "#invoice_to,#invoice_form,#invoice_id,#invoice_dou_date,#invoice_date, #invoice_tax, #invoice_terms, #invoice_notes,  #invoice_po_number,#invoice_payment_term,  #currencyList, #imageUpload ", function (e) {
     e.preventDefault();
-    $('#completeInvoice').removeClass("d-none");
+    $('#draft_btn').removeClass("d-none");
     $('#previw_id').addClass("d-none");
     $('#complate_invoice_id').addClass("d-none");
 });

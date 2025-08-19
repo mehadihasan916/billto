@@ -735,6 +735,20 @@
                         {{ __('messages.Save') }}
                     @endif
                 </button>
+                {{-- id="draft" --}}
+                <button style="background-color: #686868" id="draft_btn" type="button"
+                    class="btn btn_hober bnt_responsive send-invoice preview_image  px-4   inputBorderRedius"
+                    @if (isset($invoiceData)) @else disabled @endif>
+                    <a class="text-reset text-decoration-none" href="{{ url('/my-trash-invoice') }}">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        {{-- @if (isset($invoiceData)) @else  @endif> --}}
+                        @if (isset($invoiceData))
+                            Save Draft
+                        @else
+                            Save Draft
+                        @endif
+                    </a>
+                </button>
 
                 <a id="previw_id"
                     class="btn btn_hober inputBorderRedius send-invoice preview_image bnt_responsive d-none bordered   text-white  py-2 px-4 my-2"
