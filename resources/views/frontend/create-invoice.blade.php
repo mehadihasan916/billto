@@ -125,6 +125,7 @@
                                         <option value="EUR" label="Euro">EUR</option>
                                         <option value="JPY" label="Japanese yen">JPY</option>
                                         <option value="GBP" label="Pound sterling">GBP</option>
+                                        <option value="BDT" label="Bangladeshi taka">BDT</option>
                                         <option disabled>──────────</option>
                                         <option value="AED" label="United Arab Emirates dirham">AED</option>
                                         <option value="AFN" label="Afghan afghani">AFN</option>
@@ -139,7 +140,6 @@
                                         <option value="BAM" label="Bosnia and Herzegovina convertible mark">BAM
                                         </option>
                                         <option value="BBD" label="Barbadian dollar">BBD</option>
-                                        <option value="BDT" label="Bangladeshi taka">BDT</option>
                                         <option value="BGN" label="Bulgarian lev">BGN</option>
                                         <option value="BHD" label="Bahraini dinar">BHD</option>
                                         <option value="BIF" label="Burundian franc">BIF</option>
@@ -567,7 +567,7 @@
                         </div>
                         <div class="row pt-2 ">
                             <div class="col-7 d-flex align-items-center justify-content-end textColor pe-5">
-                                {{ __('messages.Tax') }} </div>
+                                {{ __('messages.Sales_Tax') }} </div>
                             <div class="col input-group p-0">
                                 {{-- <div class="input-group-text  border-0 bgInput textColor ">&#8453;</div> --}}
 

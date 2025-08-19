@@ -97,7 +97,7 @@
                                                          </div>
 
                                                        <div class="col-12 pt-3">
-                                                         <button class="btn  btn-sm btn-warning btn_bg text-white">{{__('messages.More_Package')}}</button>
+                                                         <a href="{{ route('home') }}#packages" class="btn  btn-sm btn-warning btn_bg text-white">{{__('messages.More_Package')}}</a>
                                                        </div>
                                                     </div>
                                                 </div>

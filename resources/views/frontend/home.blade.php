@@ -72,7 +72,7 @@
         $count2 = 1;
     @endphp
     <div class="package_area ">
-        <div class="container package_area_border">
+        <div class="container package_area_border" id="packages">
             <div class="row" style="margin-bottom: 58px;">
                 <div class="col-12">
                     <div class="plan text-center ctrate-text">
