@@ -246,6 +246,21 @@ $("#invoiceForm").submit(function (e) {
                 $('#invoice_amu_paid').addClass("is-valid");
             }
 
+            if (error.responseJSON.errors.invoice_notes != null) {
+                $('#invoice_notes').addClass("is-invalid");
+                $('#invoice_notes_error').text(error.responseJSON.errors.invoice_notes);
+            } else {
+                $('#invoice_notes').removeClass("is-invalid");
+                $('#invoice_notes_error').addClass("is-valid");
+            }
+            if (error.responseJSON.errors.invoice_terms != null) {
+                $('#invoice_terms').addClass("is-invalid");
+                $('#invoice_terms_error').text(error.responseJSON.errors.invoice_terms);
+            } else {
+                $('#invoice_terms').removeClass("is-invalid");
+                $('#invoice_terms_error').addClass("is-valid");
+            }
+
 
         }
     });
