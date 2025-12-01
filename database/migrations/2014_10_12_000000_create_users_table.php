@@ -21,14 +21,14 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('picture__input')->nullable();
             $table->string('signature')->nullable();
-            $table->string('terms')->nullable();
+            $table->text('terms')->nullable();
             $table->string('invoice_logo')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('plan', ['free', 'premium'])->default('free');
             $table->rememberToken();
-            $table->timestamps();       
+            $table->timestamps();
         });
     }
 

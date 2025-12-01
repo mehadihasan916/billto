@@ -209,8 +209,8 @@ class InvoiceController extends Controller
             'invoice_date' => 'required|date',
             'invoice_payment_term' => 'max:30',
             'invoice_po_number' => 'max:30',
-            'invoice_notes' => 'max:100',
-            'invoice_terms' => 'max:100',
+            'invoice_notes' => 'max:1000',
+            'invoice_terms' => 'max:1000',
             'invoice_logo' => 'max:1024',
         ]);
 
