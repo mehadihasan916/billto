@@ -139,6 +139,7 @@ function addData() {
 $("#invoiceForm").submit(function (e) {
     e.preventDefault();
     const fd = new FormData(this);
+    const submitStatus = fd.get('invoice_status') || 'complete';
     // alert("Invoice Form Submit");
     $.ajax({
         url: '/invoices/store',
@@ -170,17 +171,29 @@ $("#invoiceForm").submit(function (e) {
                 })
 
             } else {
+                if (response.redirect) {
+                    window.location = response.redirect;
+                    return;
+                }
+
                 $("#downlodeInvoice").attr("href", "/invoice/download/" + response);
-                button =
+                if (submitStatus === 'incomplete') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Draft saved',
+                    });
+                    $('#draft_btn').addClass("d-none");
+                } else {
                     Toast.fire({
                         icon: 'success',
                         title: ' Successfuly Invoice Created ',
 
                     });
-                $('#previw_id').removeClass("d-none");
-                $('#complate_invoice_id').removeClass("d-none");
-                $('#completeInvoice').addClass("d-none");
-                $('#draft_btn').addClass("d-none");
+                    $('#previw_id').removeClass("d-none");
+                    $('#complate_invoice_id').removeClass("d-none");
+                    $('#completeInvoice').addClass("d-none");
+                    $('#draft_btn').addClass("d-none");
+                }
             }
         },
         error: function (error) {
@@ -265,6 +278,15 @@ $("#invoiceForm").submit(function (e) {
         }
     });
 
+});
+
+$('#completeInvoice').on('click', function () {
+    $('#invoice_status').val('complete');
+});
+
+$('#draft_btn').on('click', function () {
+    $('#invoice_status').val('incomlete');
+    $('#invoiceForm').trigger('submit');
 });
 
 function allData() {

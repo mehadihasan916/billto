@@ -56,6 +56,7 @@
             @endif
             {{-- <form method="post" action="{{ url('/invoices/store') }}" enctype="multipart/form-data"> --}}
             @csrf
+            <input type="hidden" name="invoice_status" id="invoice_status" value="complete">
             <div class="container p-4 mt-2 mt-sm-5" style="background-color: #F0F0F0; border-radius: 10px;">
                 <div class="row">
                     <div class="col-md-7">
@@ -371,9 +372,9 @@
                                     <input type="date" name="invoice_date"
                                         class="form-control textColor inputBorderRedius"
                                         value="{{ isset($invoiceData->invoice_date) ? $invoiceData->invoice_date : date('Y-m-d') }}"
-                                         min="{{ date('Y-m-d') }}" required id="invoice_current_date">
+                                        min="{{ date('Y-m-d') }}" required id="invoice_current_date">
 
-                                        {{-- <label class="invoiceID" for="invoice_date">
+                                    {{-- <label class="invoiceID" for="invoice_date">
 
                                             <i class="bi bi-calendar3 d-none"></i>
                                         </label> --}}
@@ -409,7 +410,7 @@
                                     <input type="date" id="invoice_date_due" name="invoice_dou_date"
                                         class="form-control textColor inputBorderRedius"
                                         value="@if (isset($invoiceData->invoice_dou_date)) {{ $invoiceData->invoice_dou_date }}@else {{ $date->format('Y-m-d') }} @endif"
-                                         min="{{ date('Y-m-d') }}" >
+                                        min="{{ date('Y-m-d') }}">
 
                                     {{-- <label class="invoiceID" for="invoice_dou_date">
                                         <i class="bi bi-calendar3"></i>
@@ -424,7 +425,8 @@
                             <div class="col-sm-8">
                                 <input type="number" name="invoice_po_number"
                                     class="form-control inputBorderRedius textColor" id="invoice_po_number"
-                                    value="@if (isset($invoiceData->invoice_po_number)) {{ $invoiceData->invoice_po_number }} @endif"   min="0"  >
+                                    value="@if (isset($invoiceData->invoice_po_number)) {{ $invoiceData->invoice_po_number }} @endif"
+                                    min="0">
                                 <div id="invoice_po_number_error" class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -472,7 +474,7 @@
                         <div class="input-group ">
                             <input type="number" name="product_rate" id="product_rate"
                                 class="form-control inputBorderRedius" placeholder="{{ __('messages.Rate') }}"
-                                onchange="ptotal();addData();"  min="1" max="100000">
+                                onchange="ptotal();addData();" min="1" max="100000">
 
                             <div id="product_rate_error" class="invalid-feedback"></div>
                         </div>
@@ -739,15 +741,12 @@
                 <button style="background-color: #686868" id="draft_btn" type="button"
                     class="btn btn_hober bnt_responsive send-invoice preview_image  px-4   inputBorderRedius"
                     @if (isset($invoiceData)) @else disabled @endif>
-                    <a class="text-reset text-decoration-none" href="{{ url('/my-trash-invoice') }}">
-                        <i class="bi bi-pencil-square me-2"></i>
-                        {{-- @if (isset($invoiceData)) @else  @endif> --}}
-                        @if (isset($invoiceData))
-                            Save Draft
-                        @else
-                            Save Draft
-                        @endif
-                    </a>
+                    <i class="bi bi-pencil-square me-2"></i>
+                    @if (isset($invoiceData))
+                        Save Draft
+                    @else
+                        Save Draft
+                    @endif
                 </button>
 
                 <a id="previw_id"
@@ -783,7 +782,7 @@
 
     <section class="invoice_template">
         <div>
-            <div class="container" >
+            <div class="container">
                 <div class="text-center  my-5">
                     <h2 class="h2_title"> {{ __('messages.Choose_Your_Invoice_Template') }}</h2>
                     <p class="fs-sm fw-bolder">{{ __('messages.Start_creating_your_professional_bill') }}</p>
@@ -794,7 +793,7 @@
                     </div>
                 @else
                     <div class="row text-center mb-4 " id="load_data">
-                         {{-- @include('frontend.craet_page_load_data') --}}
+                        {{-- @include('frontend.craet_page_load_data') --}}
 
                         @foreach ($packages as $packege)
                             @foreach ($packege->templates as $template)
@@ -807,11 +806,14 @@
                                                 {{ $packege->packageName ?? '' }}
                                             @endif
                                         </span>
-                                        <input type="radio" name="template_id"  data-template-name="{{ $template->templateName }}" value="{{ $template->id }}"
-                                            @if ($template_id_check->id == $template->id) checked @else @endif />
+                                        <input type="radio" name="template_id"
+                                            data-template-name="{{ $template->templateName }}"
+                                            value="{{ $template->id }}"
+                                            @if ($template_id_check == $template->templateName) checked @else @endif />
                                         <span class="radio-btn"> <i class="bi bi-check-lg"></i>
                                             <div class="hobbies-icon tempResponsive">
-                                                <img src=" {{ asset('uploads/template/' . $template->templateImage) }}" alt="">
+                                                <img src=" {{ asset('uploads/template/' . $template->templateImage) }}"
+                                                    alt="">
                                             </div>
                                         </span>
 
@@ -993,4 +995,3 @@
         });
     </script>
 @endpush
-

@@ -47,6 +47,7 @@ class InvoiceController extends Controller
             $user = Auth::user()->id;
             $template_id = "";
             $template_id_check = InvoiceTemplate::get()->first();
+            $template_id_check = $template_id_check->templateName;
 
             $lastInvoice = Invoice::where('user_id', $user)->orderBy('created_at', 'desc')->get([
                 'invoice_form',
@@ -114,6 +115,7 @@ class InvoiceController extends Controller
             $data  = Invoice::where('id', 1)->get()->first();
             $template_id = "";
             $template_id_check = InvoiceTemplate::get()->first();
+            $template_id_check = $template_id_check->templateName;
 
             $lastInvoice = Invoice::where('session_id',  $sessionId)
                 ->orderBy('created_at', 'desc')
@@ -216,6 +218,7 @@ class InvoiceController extends Controller
 
         $user_id = Auth::id();
         $template_id_check = $request->template_id;
+        $invoiceStatus = $request->input('invoice_status', 'complete');
 
         // Check if user has a package, if not assign Free Plan
         $userPackage = PaymentGetway::where('user_id', $user_id)->first();
@@ -338,6 +341,7 @@ class InvoiceController extends Controller
         $tax = ($request->invoice_tax * $products) / 100;
         $total = $products + $tax;
         $status = $request->receive_advance_amount == $request->final_total ? 'paid' : 'due';
+        $statusDuePaid = $invoiceStatus === 'incomlete' ? 'draft' : $status;
 
         // Save invoice
         $invoice = Invoice::updateOrCreate(
@@ -363,8 +367,8 @@ class InvoiceController extends Controller
                 'balanceDue_amounts' => round($request->balanceDue_amounts, 2),
                 'discount_amounts' => round($request->discount_amounts, 2),
                 'discount_percent' => $request->discount_percent,
-                'invoice_status' => 'complete',
-                'status_due_paid' => $status,
+                'invoice_status' => $invoiceStatus,
+                'status_due_paid' => $statusDuePaid,
                 'subtotal_no_vat' => round($request->subtotal_no_vat, 2),
                 'template_name' => $request->template_name,
                 'invoice_signature' => $request->invoice_signature,
@@ -374,6 +378,11 @@ class InvoiceController extends Controller
         // Increment invoice counts after successful creation
         $check->increment('invoice_count_total');
         $check->increment('current_invoice_total');
+
+        // On draft save, redirect user back to all invoices
+        if ($invoiceStatus === 'incomlete') {
+            return response()->json(['redirect' => url('/my-trash-invoice')]);
+        }
 
         return response()->json([$invoice->id]);
     }

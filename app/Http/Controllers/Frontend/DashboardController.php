@@ -53,8 +53,8 @@ class DashboardController extends Controller
     {
         $template_id = "";
         $invoice_template = InvoiceTemplate::get();
-        $template_id_check = InvoiceTemplate::get()->first();
-        $invoiceData = Invoice::where('id', $id)->get(['id', 'invoice_logo', 'invoice_form', 'invoice_to', 'invoice_id', 'invoice_date', 'invoice_payment_term', 'invoice_dou_date', 'invoice_po_number', 'invoice_notes', 'invoice_terms', 'invoice_tax_percent', 'requesting_advance_amount_percent', 'receive_advance_amount', 'total', 'currency', 'invoice_tax_percent', 'receive_advance_amount', 'discount_percent'])->first();
+
+        $invoiceData = Invoice::where('id', $id)->get(['id', 'invoice_logo', 'invoice_form', 'invoice_to', 'invoice_id', 'invoice_date', 'invoice_payment_term', 'invoice_dou_date', 'invoice_po_number', 'invoice_notes', 'invoice_terms', 'invoice_tax_percent', 'requesting_advance_amount_percent', 'receive_advance_amount', 'total', 'currency', 'invoice_tax_percent', 'receive_advance_amount', 'discount_percent', 'template_name'])->first();
         $invoiceCount = Invoice::where('user_id', Auth::user()->id)->count();
         $sendByMail_count = SendMail_info::where('user_id', $id)->count();
         $Total_Amount_conut = Invoice::where('user_id', $id)->where('invoice_status', 'complete')->sum('final_total');
@@ -66,6 +66,8 @@ class DashboardController extends Controller
             'invoice_logo',
             'terms',
         ])->first();
+        $template_id_check = $invoiceData->template_name;
+
 
         $packages = [];
         if (Auth::check()) {
