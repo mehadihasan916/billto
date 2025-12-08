@@ -159,7 +159,7 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'product_name' => 'required|max:255',
+            'product_name' => 'required',
             'product_quantity' => 'required|numeric|between:0,9999999999',
             'product_rate' => 'required|numeric|between:0,9999999999'
         ]);
