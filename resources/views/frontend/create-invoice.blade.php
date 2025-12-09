@@ -534,7 +534,7 @@
                         </div>
                         <div class="">
                             <label for="invoice_terms"
-                                class="form-label pt-2 d-flex align-items-center textColor">{{ __('messages.Terms') }}</label>
+                                class="form-label pt-2 d-flex align-items-center textColor">{{ __('messages.Terms_&_conditions') }}</label>
                             <textarea name="invoice_terms" id="invoice_terms" rows="3" class="form-control inputBorderRedius"
                                 placeholder="{{ __('messages.Terms_and_conditions,_late_fees,_payment_methods,_delivery_schedule') }}">
 @if (isset($user_logo_terms->terms))
