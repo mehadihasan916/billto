@@ -84,17 +84,33 @@ class InvoiceController extends Controller
 
             $packages = [];
             if (Auth::check()) {
-                if (Auth::user()->email === 'womenindigitalbd@gmail.com') {
+                if (Auth::user()->email === 'womenindigitalbd@gmail.com' ){
                     $packages = SubscriptionPackage::all();
                 } else {
-                    $find_subscription = PaymentGetway::where('user_id', auth()->user()->id)->first();
+                    // $find_subscription = PaymentGetway::where('user_id', auth()->user()->id)->first();
+                    // if ($find_subscription) {
+                    //     // User has a subscription, show their current plan
+                    //     $packages = SubscriptionPackage::where('id', $find_subscription->subscription_package_id)->get();
+                    // } else {
+                    //     // User has no subscription, show Free Plan
+                    //     $packages = SubscriptionPackage::where('price', '0')->get();
+                    // }
+
+                    // Always load free plan
+                    $packages = SubscriptionPackage::where('price', 0)->get();
+
+                    // Check user subscription
+                    $find_subscription = PaymentGetway::where('user_id', auth()->id())->first();
+
                     if ($find_subscription) {
-                        // User has a subscription, show their current plan
-                        $packages = SubscriptionPackage::where('id', $find_subscription->subscription_package_id)->get();
-                    } else {
-                        // User has no subscription, show Free Plan
-                        $packages = SubscriptionPackage::where('price', '0')->get();
+                        // Add subscribed package
+                        $subscribed = SubscriptionPackage::where('id', $find_subscription->subscription_package_id)->first();
+
+                        if ($subscribed) {
+                            $packages->push($subscribed); // add subscribed plan to list
+                        }
                     }
+
                 }
             }
 
