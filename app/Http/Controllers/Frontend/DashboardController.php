@@ -65,6 +65,7 @@ class DashboardController extends Controller
         $user_logo_terms = User::where('id', Auth::user()->id)->get([
             'invoice_logo',
             'terms',
+            'signature',
         ])->first();
         $template_id_check = $invoiceData->template_name;
 
