@@ -2,7 +2,33 @@
 <style>
     @page {
         padding: 0;
+        margin: 140px 0 0 0;
+        header: html_repeatingHeader;
+    }
+
+    /* keep the original top spacing on the first page */
+    @page :first {
         margin: 0;
+        header: none;
+    }
+
+    .pdf-repeat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px 10px 40px;
+        border-bottom: 1px solid #CC3D3B;
+    }
+
+    .pdf-repeat-header .repeat-invoice {
+        color: #CC3D3B;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .pdf-repeat-header .repeat-logo img {
+        max-height: 70px;
+        object-fit: contain;
     }
 
     /* main body */
@@ -110,10 +136,22 @@
         text-align: center;
         padding-top: 10px;
     }
+
     .hello {
         color: #CC3D3B !important;
     }
 </style>
+
+<htmlpageheader name="repeatingHeader">
+    <div class="pdf-repeat-header">
+        <div class="repeat-invoice">Invoice: {{ $invoiceData->invoice_id }}</div>
+        @if ($userInvoiceLogo->invoice_logo != '')
+            <div class="repeat-logo">
+                <img src="{{ public_path('storage/invoice/logo/' . $userInvoiceLogo->invoice_logo) }}" alt="Logo">
+            </div>
+        @endif
+    </div>
+</htmlpageheader>
 <title>Billto.io</title>
 
 
@@ -123,10 +161,12 @@
 
 
     <div class="invoice_body page">
-        <div class="invoiceNumberLaft" >
+        <div class="invoiceNumberLaft">
             <table>
                 <tr text-rotate="90">
-                    <td style="padding-left:55px; color:#CC3D3B; padding-top:50%; font-size:21px"><h1>Invoice: {{ $invoiceData->invoice_id }}</h1></td>
+                    <td style="padding-left:55px; color:#CC3D3B; padding-top:50%; font-size:21px">
+                        <h1>Invoice: {{ $invoiceData->invoice_id }}</h1>
+                    </td>
                 </tr>
             </table>
         </div>
