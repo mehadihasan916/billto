@@ -2,34 +2,16 @@
 <style>
     @page {
         padding: 0;
-        margin: 140px 0 0 0;
-        header: html_repeatingHeader;
+        margin: 160px 0 0 0;
     }
 
-    /* keep the original top spacing on the first page */
+    /* same spacing on every page so the fixed header area is available */
     @page :first {
-        margin: 0;
-        header: none;
+        /* keep first page the same as others so header space is consistent */
+        margin: 160px 0 0 0;
     }
 
-    .pdf-repeat-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 40px 10px 40px;
-        border-bottom: 1px solid #CC3D3B;
-    }
 
-    .pdf-repeat-header .repeat-invoice {
-        color: #CC3D3B;
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .pdf-repeat-header .repeat-logo img {
-        max-height: 70px;
-        object-fit: contain;
-    }
 
     /* main body */
     .invoice_body {
@@ -137,21 +119,26 @@
         padding-top: 10px;
     }
 
-    .hello {
-        color: #CC3D3B !important;
+
+    /* dompdf: fixed header so logo repeats on every page */
+    header.invoice-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 140px;
+        z-index: 10;
+    }
+
+    .invoice-logo {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 150px;
     }
 </style>
 
-<htmlpageheader name="repeatingHeader">
-    <div class="pdf-repeat-header">
-        <div class="repeat-invoice">Invoice: {{ $invoiceData->invoice_id }}</div>
-        @if ($userInvoiceLogo->invoice_logo != '')
-            <div class="repeat-logo">
-                <img src="{{ public_path('storage/invoice/logo/' . $userInvoiceLogo->invoice_logo) }}" alt="Logo">
-            </div>
-        @endif
-    </div>
-</htmlpageheader>
+{{-- dompdf does not support mPDF <htmlpageheader>; keeping header content is handled by fixed positioning in CSS above --}}
 <title>Billto.io</title>
 
 
@@ -161,7 +148,7 @@
 
 
     <div class="invoice_body page">
-        <div class="invoiceNumberLaft">
+        {{-- <div class="invoiceNumberLaft">
             <table>
                 <tr text-rotate="90">
                     <td style="padding-left:55px; color:#CC3D3B; padding-top:50%; font-size:21px">
@@ -169,9 +156,9 @@
                     </td>
                 </tr>
             </table>
-        </div>
+        </div> --}}
         <div class="fullInvoice">
-            <section style="padding-top:50px;">
+            <section>
                 <div class="first_section" style="border-bottom: 1px solid #CC3D3B; width:89%">
                     <div class="leftSideArea">
                         <div style="">
@@ -198,12 +185,18 @@
                     </div>
                     <div class="rightSideArea" style="margin-bottom: 15px">
                         <div style="text-align:right;    ">
-                            @if ($userInvoiceLogo->invoice_logo != '')
+                            {{-- @if ($userInvoiceLogo->invoice_logo != '')
                                 <img style="object-fit: fill; "
                                     src="{{ public_path('storage/invoice/logo/' . $userInvoiceLogo->invoice_logo) }}"
                                     alt="img"
                                     style="width: 60%; height:20%; padding-top:5px;padding-bottom: 30%; ">
-                            @endif
+                            @endif --}}
+                            <header class="invoice-header">
+                                @if ($userInvoiceLogo->invoice_logo)
+                                    <img class="invoice-logo"
+                                        src="{{ public_path('storage/invoice/logo/' . $userInvoiceLogo->invoice_logo) }}">
+                                @endif
+                            </header>
                         </div>
                         <div class="" style="color: #686868;margin-left:6px; padding-top:100%;">
                             <table style="padding-left:20%;  ">
@@ -235,7 +228,7 @@
                 </div>
             </section>
 
-            <section class="second_section" style="margin-top:10px;">
+            <section class="second_section">
                 <div class="table">
                     <div style=" margin-right:10%;  padding-bottom:15px;">
                         <div style="height:200px;">
@@ -245,6 +238,12 @@
                                         <th
                                             style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
                                             {{ __('messages.description') }} </th>
+                                        {{-- <th
+                                            style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
+                                            {{ __('messages.qty') }} </th>
+                                        <th
+                                            style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
+                                            {{ __('messages.unit_price') }} </th> --}}
                                         <th
                                             style="  border-collapse: collapse; border-top:none;background:#CC3D3B;  border-right:none; padding-right:20px; text-align:right; width:20%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
                                             {{ __('messages.amount') }} </th>
@@ -259,6 +258,12 @@
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
                                                 {{ $product_detail->product_name }}</td>
+                                            {{-- <td class="border"
+                                                style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
+                                                {{ $product_detail->product_quantity }}</td>
+                                            <td class="border"
+                                                style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
+                                                {{ number_format($product_detail->product_rate, 2) }}</td> --}}
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse;  border-top:none; border-right:none; padding-right:20px; width:20%; font-weight: 400; font-size: 13px; color: #686868; text-align:right; ">
                                                 {{ number_format($product_detail->product_amount, 2) }}</td>
@@ -272,6 +277,12 @@
                                             <td class="border"
                                                 style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
                                                 &nbsp;</td>
+                                            {{-- <td class="border"
+                                                style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
+                                                &nbsp;</td>
+                                            <td class="border"
+                                                style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
+                                                &nbsp;</td> --}}
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
                                             </td>

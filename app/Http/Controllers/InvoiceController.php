@@ -514,6 +514,9 @@ class InvoiceController extends Controller
             $mpdf = new \Mpdf\Mpdf([
                 'format' => 'A4',
                 'orientation' => 'P',
+
+                'margin_top'    => 20,
+
                 'fontDir' => array_merge($fontDirs, [$path]),
                 'fontdata' => $fontData + [
                     'solaimanlipi' => [
@@ -523,6 +526,35 @@ class InvoiceController extends Controller
                 ],
                 'default_font' => 'solaimanlipi',
             ]);
+            $mpdf->AddPage();
+
+            $mpdf->SetHTMLHeader('
+            <table width="100%">
+                <tr>
+                    <td width="30%" style="text-align: right;">
+                        <img src="'.public_path('storage/invoice/logo/'.$userInvoiceLogo->invoice_logo).'" height="30" width="100" style="float: right;">
+                    </td>
+                </tr>
+            </table>
+            ');
+
+            if($invoiceData->template_name == "3"){
+                $mpdf->SetHTMLFooter('
+                    <div class="invoiceNumberLaft" >
+                        <table style="margin-bottom:600px;"  >
+                            <tr text-rotate="90">
+                                <td style="padding-left:55px; color:#CC3D3B;  font-size:21px">
+                                    <h1>Invoice: '.$invoiceData->invoice_id.' </h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                ');
+            }
+
+
+
+
 
             $mpdf->WriteHTML(view('invoices.free.all_invoice')->with(compact('invoiceData', 'data', 'userLogoAndTerms', 'productsDatas', 'userInvoiceLogo', 'due')));
             $mpdf->Output('newdocument.pdf', 'I');
