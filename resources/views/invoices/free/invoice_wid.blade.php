@@ -168,10 +168,10 @@
                                 Bangladesh 01635 497868 | info@womenindigital.net | womenindigital.net</p>
                         </div>
                         <div style=" margin-top:22px ">
-                            <h4 style="font-size:13px;color:#CC3D3B; margin:0px;">Billing Address:</h4>
-                            <p style="font-size:13px; margin:4px;">Women in Digital </p>
-                            <p style="font-size:13px; margin:4px;">{{ $invoiceData->invoice_form }} </p>
-                            <p style="font-size:13px; margin-top:8px; margin-left:4px; ">or <br>
+                            <h4 style="font-size:11px;color:#CC3D3B; margin:0px;">Billing Address:</h4>
+                            <p style="font-size:11px; margin:4px;">Women in Digital </p>
+                            <p style="font-size:11px; margin:4px;">{{ $invoiceData->invoice_form }} </p>
+                            <p style="font-size:11px; margin-top:8px; margin-left:4px; ">or <br>
                                 ACHIA KHALEDA NILA<br>
                                 Standard Chattered Bank <br>
                                 Account Number: 18 9317619 01 <br>
@@ -223,8 +223,8 @@
                 </div>
                 <div style=" margin-top:8px ">
                     <h4 style="font-size:13px;color:#CC3D3B; margin:0px;">Bill To</h4>
-                    <p style="font-size:13px; margin:4px;">Women in Digital </p>
-                    <p style="font-size:13px; margin:4px;">{{ $invoiceData->invoice_to }} </p>
+                    <p style="font-size:11px; margin:4px;">Women in Digital </p>
+                    <p style="font-size:11px; margin:4px;">{{ $invoiceData->invoice_to }} </p>
                 </div>
             </section>
 
@@ -238,12 +238,12 @@
                                         <th
                                             style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
                                             {{ __('messages.description') }} </th>
-                                        {{-- <th
+                                        <th
                                             style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
                                             {{ __('messages.qty') }} </th>
                                         <th
                                             style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
-                                            {{ __('messages.unit_price') }} </th> --}}
+                                            {{ __('messages.unit_price') }} </th>
                                         <th
                                             style="  border-collapse: collapse; border-top:none;background:#CC3D3B;  border-right:none; padding-right:20px; text-align:right; width:20%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
                                             {{ __('messages.amount') }} </th>
@@ -258,12 +258,12 @@
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
                                                 {{ $product_detail->product_name }}</td>
-                                            {{-- <td class="border"
+                                            <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
                                                 {{ $product_detail->product_quantity }}</td>
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
-                                                {{ number_format($product_detail->product_rate, 2) }}</td> --}}
+                                                {{ number_format($product_detail->product_rate, 2) }}</td>
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse;  border-top:none; border-right:none; padding-right:20px; width:20%; font-weight: 400; font-size: 13px; color: #686868; text-align:right; ">
                                                 {{ number_format($product_detail->product_amount, 2) }}</td>
@@ -277,12 +277,12 @@
                                             <td class="border"
                                                 style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
                                                 &nbsp;</td>
-                                            {{-- <td class="border"
+                                            <td class="border"
                                                 style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
                                                 &nbsp;</td>
                                             <td class="border"
                                                 style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
-                                                &nbsp;</td> --}}
+                                                &nbsp;</td>
                                             <td class="border"
                                                 style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
                                             </td>

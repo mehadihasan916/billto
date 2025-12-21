@@ -557,7 +557,8 @@ class InvoiceController extends Controller
 
 
             $mpdf->WriteHTML(view('invoices.free.all_invoice')->with(compact('invoiceData', 'data', 'userLogoAndTerms', 'productsDatas', 'userInvoiceLogo', 'due')));
-            $mpdf->Output('newdocument.pdf', 'I');
+            // $mpdf->Output('newdocument.pdf', 'I');
+            $mpdf->Output($invoiceData->invoice_id . '.pdf', 'I');
         } elseif (Auth::user()->plan == 'premium') {
             $pdf = Pdf::loadView('invoices.wid')->with(compact('invoiceData', 'productsDatas', 'userInvoiceLogo', 'due'));
             return $pdf->stream('invoices.wid.pdf');
