@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Mpdf\Config\ConfigVariables as ConfigConfigVariables;
+use NumberFormatter;
 use Spatie\Browsershot\Browsershot;
 
 class InvoiceController extends Controller
@@ -501,6 +502,11 @@ class InvoiceController extends Controller
             'signature',
 
         ])->first();
+        //amount in word
+        $amount = $invoiceData->final_total - $invoiceData->receive_advance_amount;
+
+        $fmt = new NumberFormatter('en', NumberFormatter::SPELLOUT);
+        $amountInWords = ucfirst($fmt->format($amount));
 
 
         Session::forget('last_invoice_id_download');
@@ -515,7 +521,7 @@ class InvoiceController extends Controller
                 'format' => 'A4',
                 'orientation' => 'P',
 
-                'margin_top'    => 20,
+                'margin_top'    => 25,
 
                 'fontDir' => array_merge($fontDirs, [$path]),
                 'fontdata' => $fontData + [
@@ -531,8 +537,8 @@ class InvoiceController extends Controller
             $mpdf->SetHTMLHeader('
             <table width="100%">
                 <tr>
-                    <td width="30%" style="text-align: right;">
-                        <img src="'.public_path('storage/invoice/logo/'.$userInvoiceLogo->invoice_logo).'" height="30" width="100" style="float: right;">
+                    <td  style="text-align: right;">
+                        <img class="invoice-logo" src="'.public_path('storage/invoice/logo/'.$userInvoiceLogo->invoice_logo).'"  width="100" style="float: right;">
                     </td>
                 </tr>
             </table>
@@ -541,22 +547,34 @@ class InvoiceController extends Controller
             if($invoiceData->template_name == "3"){
                 $mpdf->SetHTMLFooter('
                     <div class="invoiceNumberLaft" >
-                        <table style="margin-bottom:600px;"  >
+                        <table style="margin-bottom:300px; ">
                             <tr text-rotate="90">
                                 <td style="padding-left:55px; color:#CC3D3B;  font-size:21px">
                                     <h1>Invoice: '.$invoiceData->invoice_id.' </h1>
                                 </td>
                             </tr>
                         </table>
+
+                        <div style="position:absolute; bottom:20px; right:20px; font-size:11px; color:#666;">
+                            Page {PAGENO} of {nbpg}
+                        </div>
                     </div>
                 ');
+            }else{
+                $mpdf->SetHTMLFooter('
+                <div class="invoiceNumberLaft" >
+                    <div style="position:absolute; bottom:20px; right:20px; font-size:11px; color:#666;">
+                        Page {PAGENO} of {nbpg}
+                    </div>
+                </div>
+            ');
             }
 
 
 
 
 
-            $mpdf->WriteHTML(view('invoices.free.all_invoice')->with(compact('invoiceData', 'data', 'userLogoAndTerms', 'productsDatas', 'userInvoiceLogo', 'due')));
+            $mpdf->WriteHTML(view('invoices.free.all_invoice')->with(compact('invoiceData', 'data', 'userLogoAndTerms', 'productsDatas', 'userInvoiceLogo', 'due', 'amountInWords')));
             // $mpdf->Output('newdocument.pdf', 'I');
             $mpdf->Output($invoiceData->invoice_id . '.pdf', 'I');
         } elseif (Auth::user()->plan == 'premium') {

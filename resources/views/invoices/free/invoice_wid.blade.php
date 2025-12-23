@@ -135,6 +135,20 @@
         top: 20px;
         right: 20px;
         width: 150px;
+        border-bottom: 1px solid #bf1903;
+        padding-bottom: 2px;
+    }
+</style>
+<style>
+    .page-bottom-note {
+        position: fixed;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 11px;
+        color: #686868;
+        margin-top: 40px;
     }
 </style>
 
@@ -223,7 +237,6 @@
                 </div>
                 <div style=" margin-top:8px ">
                     <h4 style="font-size:13px;color:#CC3D3B; margin:0px;">Bill To</h4>
-                    <p style="font-size:11px; margin:4px;">Women in Digital </p>
                     <p style="font-size:11px; margin:4px;">{{ $invoiceData->invoice_to }} </p>
                 </div>
             </section>
@@ -232,65 +245,78 @@
                 <div class="table">
                     <div style=" margin-right:10%;  padding-bottom:15px;">
                         <div style="height:200px;">
-                            <table class="table1 " style="width:100%;">
+
+                            <table class="table1" width="100%" cellspacing="0" cellpadding="0"
+                                style="border-collapse:collapse; table-layout:fixed;">
+
+                                <!-- DEFINE COLUMNS ONCE -->
+                                <colgroup>
+                                    @for ($i = 1; $i <= 13; $i++)
+                                        <col style="width:7.69%">
+                                    @endfor
+                                </colgroup>
+
                                 <thead>
-                                    <tr style="padding-left:200px !important;">
+                                    <tr>
+                                        <th colspan="10"
+                                            style="background:#CC3D3B; padding-left:10px;
+                text-align:left; font-size:13px; line-height:29px;
+                text-transform:uppercase; color:#fff;">
+                                            {{ __('messages.description') }}
+                                        </th>
+                                        <th style="background:#CC3D3B; padding-left:10px; color:#fff;">
+                                            {{ __('messages.qty') }}
+                                        </th>
                                         <th
-                                            style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
-                                            {{ __('messages.description') }} </th>
+                                            style="background:#CC3D3B; padding-left:10px; color:#fff; white-space:nowrap;">
+                                            {{ __('messages.unit_price') }}
+                                        </th>
                                         <th
-                                            style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
-                                            {{ __('messages.qty') }} </th>
-                                        <th
-                                            style="  border-collapse: collapse; border-top:none; background:#CC3D3B; border-right:none; padding-left:10px; text-align:left; width:40%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
-                                            {{ __('messages.unit_price') }} </th>
-                                        <th
-                                            style="  border-collapse: collapse; border-top:none;background:#CC3D3B;  border-right:none; padding-right:20px; text-align:right; width:20%; font-size: 13px; line-height: 29px;text-transform: uppercase; color: #fff;">
-                                            {{ __('messages.amount') }} </th>
+                                            style="background:#CC3D3B; padding-right:20px; text-align:right; color:#fff;">
+                                            {{ __('messages.amount') }}
+                                        </th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
-                                    @php
-                                        $count = 1;
-                                    @endphp
+                                    @php $count = 0; @endphp
+
                                     @foreach ($productsDatas as $product_detail)
                                         <tr>
-                                            <td class="border"
-                                                style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
-                                                {{ $product_detail->product_name }}</td>
-                                            <td class="border"
-                                                style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
-                                                {{ $product_detail->product_quantity }}</td>
-                                            <td class="border"
-                                                style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; padding-top:8px; padding-bottom:8px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
-                                                {{ number_format($product_detail->product_rate, 2) }}</td>
-                                            <td class="border"
-                                                style="background:#F2F2F2;    border-collapse: collapse;  border-top:none; border-right:none; padding-right:20px; width:20%; font-weight: 400; font-size: 13px; color: #686868; text-align:right; ">
-                                                {{ number_format($product_detail->product_amount, 2) }}</td>
-                                        </tr>
-                                        @php
-                                            $last_count = $count++;
-                                        @endphp
-                                    @endforeach
-                                    @for ($x = $last_count; $x <= 5; $x++)
-                                        <tr>
-                                            <td class="border"
-                                                style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
-                                                &nbsp;</td>
-                                            <td class="border"
-                                                style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
-                                                &nbsp;</td>
-                                            <td class="border"
-                                                style="border-left:none;    border-collapse: collapse; background:#F2F2F2;  border-top:none; border-right:none; padding:6px 0px; padding-left:5px; text-align:left; width:20%;  font-weight: 400; font-size: 13px; color: #686868; ">
-                                                &nbsp;</td>
-                                            <td class="border"
-                                                style="background:#F2F2F2;    border-collapse: collapse; border-top:none; border-right:none; padding-left:10px; text-align:left; width:40%;font-weight: 400; font-size: 13px; color: #686868; ">
+                                            <td colspan="10"
+                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff;">
+                                                {{ $product_detail->product_name }}
                                             </td>
+                                            <td
+                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff;">
+                                                {{ $product_detail->product_quantity }}
+                                            </td>
+                                            <td
+                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff;">
+                                                {{ number_format($product_detail->product_rate, 2) }}
+                                            </td>
+                                            <td
+                                                style="background:#F2F2F2; padding:8px 20px; text-align:right;  border:1px solid #ffffff;">
+                                                {{ number_format($product_detail->product_amount, 2) }}
+                                            </td>
+                                        </tr>
+                                        @php $count++; @endphp
+                                    @endforeach
+
+                                    <!-- FILLER ROWS -->
+                                    @for ($x = $count; $x < 5; $x++)
+                                        <tr>
+                                            <td colspan="10" style="background:#F2F2F2; ">&nbsp;</td>
+                                            <td style="background:#F2F2F2;">&nbsp;</td>
+                                            <td style="background:#F2F2F2;">&nbsp;</td>
+                                            <td style="background:#F2F2F2;">&nbsp;</td>
                                         </tr>
                                     @endfor
                                 </tbody>
-
                             </table>
+
+
+
                         </div>
                         <div style="  width:100%; display:flex; margin-left:30%;">
 
@@ -351,6 +377,9 @@
                                     style="font-size:16px;  padding:5px 20px 0px 10px; margin:0px; border-top:1px solid red;">
                                     {{ $invoiceData->currency }}
                                     {{ number_format($invoiceData->final_total - $invoiceData->receive_advance_amount, 2) }}
+                                    <span style="font-size:13px; color:#050505;">
+                                        ({{ $amountInWords }} only)
+                                    </span>
                                 </h5>
                             </div>
 
@@ -365,7 +394,8 @@
                     <div class="margin_left_terms">
                         <div class="thanks" style="">
                             <h5 style=" margin:0; padding-bottom:10px;font-weight: 400; font-size: 16px;  width: 80%">
-                                {{ __('messages.Thank_You_for_your_business') }}</h5>
+                                {{ __('messages.Thank_You_for_your_business') }}
+                            </h5>
                         </div>
                         <div class="termsFelx">
                             <div class="termsAndConditionDiv" style="color: #686868;">
@@ -385,6 +415,12 @@
                         </div>
 
                     </div>
+                </div>
+            </section>
+            <section>
+                <div>
+                    <p class="page-bottom-note" style="color: #686868;">
+                        This is a computer generated document No Physical Signature Needed</p>
                 </div>
             </section>
         </div>
