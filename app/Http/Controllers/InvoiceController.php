@@ -534,15 +534,15 @@ class InvoiceController extends Controller
             ]);
             $mpdf->AddPage();
 
-            $mpdf->SetHTMLHeader('
-            <table width="100%">
-                <tr>
-                    <td  style="text-align: right;">
-                        <img class="invoice-logo" src="'.public_path('storage/invoice/logo/'.$userInvoiceLogo->invoice_logo).'"  width="100" style="float: right;">
-                    </td>
-                </tr>
-            </table>
-            ');
+            // $mpdf->SetHTMLHeader('
+            // <table width="100%">
+            //     <tr>
+            //         <td  style="text-align: right;">
+            //             <img class="invoice-logo" src="'.public_path('storage/invoice/logo/'.$userInvoiceLogo->invoice_logo).'"  width="100" style="float: right;">
+            //         </td>
+            //     </tr>
+            // </table>
+            // ');
 
             if($invoiceData->template_name == "3"){
                 $mpdf->SetHTMLFooter('
