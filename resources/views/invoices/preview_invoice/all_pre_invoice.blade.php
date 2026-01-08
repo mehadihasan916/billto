@@ -1,11 +1,10 @@
-
-{{-- @if("1"== $data->template_name)
+{{-- @if ('1' == $data->template_name)
 
     @include('frontend.invoices.invoice_two') --}}
 
-    {{-- @include('invoices.preview_invoice.invoice_pre_four') --}}
+{{-- @include('invoices.preview_invoice.invoice_pre_four') --}}
 {{-- @include('invoices.preview_invoice.invoice_pre_one') --}}
-    {{-- @include('invoices.preview_invoice.invoice_pre_two') --}}
+{{-- @include('invoices.preview_invoice.invoice_pre_two') --}}
 {{--
 @elseif("2"== $data->template_name)
     @include('invoices.preview_invoice.invoice_pre_wid')
@@ -19,12 +18,13 @@
 
 
 
-@if("1"== $data->template_name)
-
+@if ('1' == $data->template_name)
     @include('invoices.preview_invoice.invoice_pre_one')
-
-@elseif("2"== $data->template_name)
+@elseif('2' == $data->template_name)
     @include('invoices.preview_invoice.invoice_pre_two')
-@elseif("3"== $data->template_name)
+@elseif('3' == $data->template_name)
     @include('invoices.preview_invoice.invoice_pre_wid')
+@elseif('4' == $data->template_name)
+    {{-- @include('invoices.preview_invoice.invoice_pre_four') --}}
+    @include('invoices.preview_invoice.invoice_pre_update01')
 @endif

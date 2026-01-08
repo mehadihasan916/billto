@@ -20,8 +20,8 @@
     }
 
     .invoiceNumberLaft {
-        float: left;
-        width: 13%;
+        float: right;
+        width: 100%;
     }
 
     .fullInvoice {
@@ -183,18 +183,7 @@
                         </div>
                         <div style=" margin-top:22px ">
                             <h4 style="font-size:11px;color:#CC3D3B; margin:0px;">Billing Address:</h4>
-                            <p style="font-size:11px; margin:4px;">Women in Digital </p>
                             <p style="font-size:11px; margin:4px;">{{ $invoiceData->invoice_form }} </p>
-                            <p style="font-size:11px; margin-top:8px; margin-left:4px; ">or <br>
-                                ACHIA KHALEDA NILA<br>
-                                Standard Chattered Bank <br>
-                                Account Number: 18 9317619 01 <br>
-                                SWIFT Code SCBLBDDx <br>
-                                Banani Branch, Dhaka <br>
-                                or <br>
-                                Zoom money transfer <br>
-                                <span style="color:#CC3D3B"> wid.nila@gmail.com</span> <br>
-                            </p>
                         </div>
                     </div>
                     <div class="rightSideArea" style="margin-bottom: 15px">
@@ -212,7 +201,7 @@
                                 @endif
                             </header>
                         </div>
-                        <div class="" style="color: #686868;margin-left:6px; padding-top:100%;">
+                        <div class="" style="color: #686868;margin-left:6px; ">
                             <table style="padding-left:20%;  ">
                                 <tr>
                                     <td style="text-align:left; font-size:13px; color: #CC3D3B;font-weight: bold">
@@ -284,19 +273,19 @@
                                     @foreach ($productsDatas as $product_detail)
                                         <tr>
                                             <td colspan="10"
-                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff;">
+                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff; font-size:13px;">
                                                 {{ $product_detail->product_name }}
                                             </td>
                                             <td
-                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff;">
+                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff; font-size:13px;">
                                                 {{ $product_detail->product_quantity }}
                                             </td>
                                             <td
-                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff;">
+                                                style="background:#F2F2F2; padding:8px 10px;  border:1px solid #ffffff; font-size:13px;">
                                                 {{ number_format($product_detail->product_rate, 2) }}
                                             </td>
                                             <td
-                                                style="background:#F2F2F2; padding:8px 20px; text-align:right;  border:1px solid #ffffff;">
+                                                style="background:#F2F2F2; padding:8px 20px; text-align:right;  border:1px solid #ffffff; font-size:13px;">
                                                 {{ number_format($product_detail->product_amount, 2) }}
                                             </td>
                                         </tr>
@@ -377,11 +366,14 @@
                                     style="font-size:16px;  padding:5px 20px 0px 10px; margin:0px; border-top:1px solid red;">
                                     {{ $invoiceData->currency }}
                                     {{ number_format($invoiceData->final_total - $invoiceData->receive_advance_amount, 2) }}
-                                    <span style="font-size:13px; color:#050505;">
-                                        ({{ $amountInWords }} only)
-                                    </span>
+
                                 </h5>
                             </div>
+                            <div
+                                style="font-size:13px; color:#050505; display:inline-block; width:100%; float:right; text-align:right">
+                                In word ({{ $amountInWords }} only)
+                            </div>
+
 
                         </div>
                     </div>
@@ -400,10 +392,10 @@
                         <div class="termsFelx">
                             <div class="termsAndConditionDiv" style="color: #686868;">
                                 <p
-                                    style=" border-bottom:1px solid #C4C4C4;padding-bottom:12px; font-weight: bold;font-size: 11px;color: #CC3D3B; text-transform: uppercase;">
+                                    style="border-bottom:1px solid #C4C4C4;padding-bottom:12px; font-weight: bold;font-size: 11px;color: #CC3D3B; text-transform: uppercase;">
                                     {{ __('messages.Terms_&_conditions') }}</p>
-                                <p style="">{{ $userInvoiceLogo->terms }}</p>
-                                <p>{{ $invoiceData->invoice_notes }}</p>
+                                <p style="font-size: 11px;">{{ $userInvoiceLogo->terms }}</p>
+                                <p style="font-size: 11px;">{{ $invoiceData->invoice_notes }}</p>
                             </div>
                             <div class="signature_div">
                                 @if ($userInvoiceLogo->signature != '')
@@ -417,12 +409,7 @@
                     </div>
                 </div>
             </section>
-            <section>
-                <div>
-                    <p class="page-bottom-note" style="color: #686868;">
-                        This is a computer generated document No Physical Signature Needed</p>
-                </div>
-            </section>
+
         </div>
 
     </div>

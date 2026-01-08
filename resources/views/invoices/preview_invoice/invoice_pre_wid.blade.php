@@ -126,12 +126,6 @@
                             <h4 class="fw-bold mt-3 mb-1" style="color:#CC3D3B;font-size:13px">Billing Address:</h4>
                             <p style="font-size:13px">Women in Digital</p>
                             <p>{{ $data->invoice_form }}</p>
-                            <p class="mt-2 " style="font-size:13px">
-                                or <br> ACHIA KHALEDA NILA <br> Standard Chattered Bank <br> Account Number: 18 9317619
-                                01 <br> SWIFT Code
-                                SCBLBDDx Banani Branch, Dhaka <br> or <br> Zoom money transfer <br> <span
-                                    style="color:#CC3D3B">wid.nila@gmail.com</span>
-                            </p>
 
                         </div>
                         {{-- <div class="">

@@ -555,9 +555,10 @@ class InvoiceController extends Controller
                             </tr>
                         </table>
 
-                        <div style="position:absolute; bottom:20px; right:20px; font-size:11px; color:#666;">
-                            Page {PAGENO} of {nbpg}
-                        </div>
+                    <div style="position: absolute; bottom: 20px; right: 20px; font-size: 11px; color: #666; width: 100%; text-align: left; white-space: nowrap;">
+                        Page {PAGENO} of {nbpg} &nbsp; | &nbsp; This is a computer generated document. No Physical Signature Needed.
+                    </div>
+
                     </div>
                 ');
             }else{
@@ -565,6 +566,7 @@ class InvoiceController extends Controller
                 <div class="invoiceNumberLaft" >
                     <div style="position:absolute; bottom:20px; right:20px; font-size:11px; color:#666;">
                         Page {PAGENO} of {nbpg}
+                         This is a computer generated document No Physical Signature Needed
                     </div>
                 </div>
             ');
