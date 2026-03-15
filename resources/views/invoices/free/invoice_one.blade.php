@@ -228,8 +228,9 @@
                         <td style="text-align: left;  color:#686868; font-size:16px; width: 25%">
                             {{ __('messages.Due_Date') }}</td>
                         <td style="text-align: right; color:#686868; font-size:16px; width: 30%">
-                            {{ $invoiceData->invoice_dou_date }}
+                            {{ $invoiceData->invoice_dou_date }} </td>
                         <td style="width: 10%"></td>
+                    </tr>
                 </table>
             </div>
         </section>
@@ -276,7 +277,7 @@
                     </table>
                 </div>
             </div>
-            <div style="margin-left:300px; margin-top:80px;">
+            <div style="margin-left:300px; ">
                 <table style="width: 100%;  border-top:2px solid #0370BF;margin-right:50px; ">
                     <tr style="text-align: right;">
                         <td></td>
