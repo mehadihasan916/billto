@@ -12,6 +12,8 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        // Logout: excluded to avoid 419 on frontend (session/cookie same-origin issues).
+        // Risk is limited to "force logout" only; no data exposure.
+        'logout',
     ];
 }
