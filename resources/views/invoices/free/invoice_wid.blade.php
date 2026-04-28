@@ -177,8 +177,8 @@
                     <div class="leftSideArea">
                         <div style="">
                             <h4 style="font-size:21px;color:#CC3D3B; margin:0px;">Women in digital</h4>
-                            <p style="font-size:11px; margin:4px;">House 50-51(1st Floor) , Janata Co-operative Housing
-                                Society, Ring Road, Mohammadpur, Dhaka,
+                            <p style="font-size:11px; margin:4px;">House 19B/3,(2nd Floor) Tikapara,Block F Ring
+Road, Mohammadpur, Dhaka,
                                 Bangladesh 01635 497868 | info@womenindigital.net | womenindigital.net</p>
                         </div>
                         <div style=" margin-top:22px ">
